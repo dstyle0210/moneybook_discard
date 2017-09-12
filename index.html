@@ -7,26 +7,54 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
 </head>
 <body>
-<textarea id="sms" style="width:100%;height:200px;"></textarea>
+<textarea id="sms" style="width:70%;height:200px;"></textarea>
+<button onclick="cleanup();">정리하기</button>
+<input type="text" name="" id="date" />
 <script>
-$(function(){
-    $("#sms").on("keyup",function(e){
-        if(e.key=="Enter"){
-            var sms = ($("#sms").val().split(/\n/)).join(" ");
-            $.ajax({
-                method: "POST",
-                url: "https://script.google.com/macros/s/AKfycbw3KsXcgcrixfPJhBWbCCzWM5Re7qBJa54BNylgUT3_DSrupi0/exec",
-                data: { date: "test", sms: sms }
-            }).done(function( msg ) {
-                alert( "Data Saved: " + msg );
-            });
+function cleanup(){
+    var origin = $("#sms").val().split(/\n/);
+    var sms = origin.join(" ");
+
+
+    var data = {
+        origin:"",
+        sms:"",
+        date:(new Date()).getMonth()+"/"+(new Date()).getDate(),
+        time:(new Date()).getTime(),
+        type:"",
+        money:0,
+        comment:""
+    };
+
+    if((/(Web발신)/).test(sms)){
+        // 카드사용내역
+        data.date = (sms.match(/([0-9]{2})(\/)([0-9]{2})/))[0]; // 날짜
+        data.time = (sms.match(/([0-9]{2})(\:)([0-9]{2})/))[0]; // 시간
+        if((/(7\*0\*)/).test(sms)){
+            data.type = "국민_봉올림"
+        }else if((/(7\*1\*)/).test(sms)){
+            data.type = "국민_마올림"
+        }else{
+            data.type = "그외"
         };
+        data.money = ((sms.match(/([0-9,]+)(원)/))[1]).replace(/[^\d]+/g, '');
+        data.comment = origin[origin.length-1];
+    }else{
+        // 현금사용내역
+        data.money = origin[0];
+        data.comment = origin[1];
+    };
+    console.log(comment);
+    console.log(money);
+
+    $.ajax({
+        method: "POST",
+        url: "https://script.google.com/macros/s/AKfycbw3KsXcgcrixfPJhBWbCCzWM5Re7qBJa54BNylgUT3_DSrupi0/exec",
+        data: data
+    }).done(function( msg ) {
+        alert("저장되었습니다.");
     });
-});
-
-
-
-
+};
 </script>
 </body>
 </html>
