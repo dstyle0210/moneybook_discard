@@ -44,8 +44,8 @@ function cleanup(){
         data.money = origin[0];
         data.comment = origin[1];
     };
-    console.log(comment);
-    console.log(money);
+    console.log(data.comment);
+    console.log(data.money);
 
     $.ajax({
         method: "POST",
