@@ -10,8 +10,8 @@
 <body>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-9"><textarea id="sms" style="width:100%;height:200px;"></textarea></div>
-        <div class="col-3"><button type="button" class="btn btn-info btn-lg btn-block" style="height:100%;" onclick="cleanup();">정리하기</button></div>
+        <textarea id="sms" style="width:100%;height:200px;"></textarea>
+        <div style="width:100%;padding-top:10px;"><button type="button" class="btn btn-info btn-lg btn-block" onclick="cleanup();">정리하기</button></div>
     </div>
 </div>
 <script>
@@ -47,8 +47,6 @@ function cleanup(){
         data.money = origin[0];
         data.comment = origin[1];
     };
-    console.log(data.comment);
-    console.log(data.money);
 
     $.ajax({
         method: "POST",
@@ -56,6 +54,7 @@ function cleanup(){
         data: data
     }).done(function( msg ) {
         alert("저장되었습니다.");
+        $("#sms").val("");
     });
 };
 </script>
