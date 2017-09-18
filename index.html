@@ -11,46 +11,10 @@
 <div class="container-fluid">
     <div class="row">
         <textarea id="sms" style="width:100%;height:200px;"></textarea>
-        <div style="width:100%;padding-top:10px;"><button type="button" class="btn btn-info btn-lg btn-block" onclick="cleanup();">정리하기</button></div>
+        <div style="width:100%;padding-top:10px;"><button type="button" class="btn btn-info btn-lg btn-block" onclick="cleanup();">등록하기</button></div>
     </div>
 </div>
 <script>
-    /*
-    {
-        date : 201709111811,
-        store: "",
-        price:"",
-        type:"국민봉올림"|"국민마올림"|"현대M"|"현대ZERO"|"생활비현금"|"생활비이체"
-        comment:"",
-        origin:""
-    }
-
-     [Web발신]
-     현대카드 M 승인
-     원*봉
-     12,680원 일시불
-     09/11 23:28
-     11번가_11Pay
-     누적111,260원
-
-     [Web발신]
-     KB국민카드7*0*승인
-     원*봉
-     20,000원 일시불
-     09/16 23:39
-     원조양평해장국
-     누적1,558,135원
-     내장탕 2인
-
-     [Web발신]
-     KB국민카드(7*1*)
-     홍*영님
-     09/14 01:53
-     18,160원
-     SK플래닛-페이코 스타샵 사용
-     <11번가 코디휴지>
-
-     */
 function toStr(n){return (n<10) ? "0"+n : ""+n};
 function cleanup(){
     var sms = $("#sms").val().split(/\n/);
@@ -125,28 +89,6 @@ function cleanup(){
             $("#sms").val("");
         });
     };
-    /*
-    if((/(Web발신)/).test(sms)){
-        // 카드사용내역
-        data.date = (sms.match(/([0-9]{2})(\/)([0-9]{2})/))[0]; // 날짜
-        data.time = (sms.match(/([0-9]{2})(\:)([0-9]{2})/))[0]; // 시간
-        if((/(7\*0\*)/).test(sms)){
-            data.type = "국민_봉올림"
-        }else if((/(7\*1\*)/).test(sms)){
-            data.type = "국민_마올림"
-        }else{
-            data.type = "그외"
-        };
-        data.money = ((sms.match(/([0-9,]+)(원)/))[1]).replace(/[^\d]+/g, '');
-        data.comment = origin[origin.length-1];
-    }else{
-        // 현금사용내역
-        data.money = origin[0];
-        data.comment = origin[1];
-    };
-
-
-    */
 };
 </script>
 </body>
