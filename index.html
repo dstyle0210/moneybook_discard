@@ -78,7 +78,7 @@ function cleanup(){
         data.date = yyyy+""+date.join("")+""+time.join("");
     };
 
-    var str = data.type+"\n금액:"+data.price+"\n"+"맞나요?";
+    var str = data.type+"\n"+data.price+"\n"+data.store+"\n"+data.comment+"\n맞나요?";
     if(confirm(str)){
         $.ajax({
             method: "POST",
