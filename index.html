@@ -70,7 +70,11 @@
             // 사용처 구하기
             $(sms).each(function(i,item){
                 if( (/([0-9,]+)(원)/).test(item) ){
-                    data.store = sms[i+1];
+                    if(data.type=="국민마올림"){
+                        data.store = sms[i+1];
+                    }else{
+                        data.store = sms[i+2];
+                    };
                 };
             });
 
