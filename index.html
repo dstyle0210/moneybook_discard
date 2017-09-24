@@ -15,81 +15,85 @@
     </div>
 </div>
 <script>
-function toStr(n){return (n<10) ? "0"+n : ""+n};
-function cleanup(){
-    var sms = $("#sms").val().split(/\n/);
-    $(sms).each(function(i,item){
-        sms[i] = item.trim();
-    });
-    // 기본 데이터설정
-    var data = {
-        origin:sms.join("|"), // 등록된 원문(줄바꿈만 "|"로 변경)
-        date:(function(d){return toStr(d.getFullYear())+toStr(d.getMonth()+1)+toStr(d.getDate())+toStr(d.getHours())+toStr(d.getMinutes())})(new Date()), // 현재날짜.
-        price:0, // 금액
-        type:"", // 국민봉올림 | 국민마올림 | 현대M | 현대ZERO | 생활비현금 | 생활비이체
-        store:"", // 사용처
-        comment:"" // 추가 내용.
-    };
-
-    // 결제방법(type) 구하기
-    if( (/7\*0\*/).test(data.origin) ){
-        data.type = "국민봉올림";
-    }else if( (/7\*1\*/).test(data.origin) ){
-        data.type = "국민마올림";
-    }else if( (/(현대카드 M)/).test(data.origin) ){
-        data.type = "현대M";
-    }else if( (/(현대카드 ZERO)/).test(data.origin) ){
-        data.type = "현대ZERO";
-    }else if( (/349402/).test(data.origin) ){
-        data.type = "생활비이체";
-    }else{
-        data.type = "생활비현금";
-    };
-
-    if((/(생활비)/).test(data.type)){
-        // 현금일때
-        data.price = sms[0];
-        data.comment = sms[1];
-        data.store = (data.type=="생활비이체") ? "국민은행" : "";
-    }else{
-        // 카드일때
-        // 금액 구하기
-        data.price = ((data.origin.match(/([0-9,]+)(원)/))[1]).replace(/[^\d]+/g, '');
-
-        // 사용처 구하기
+    function toStr(n){return (n<10) ? "0"+n : ""+n};
+    function cleanup(){
+        var sms = $("#sms").val().split(/\n/);
         $(sms).each(function(i,item){
-            if( (/([0-9]{2})(\:)([0-9]{2})/).test(item) ){
-                if(data.type=="국민마올림"){
-                    data.store = sms[i+2];
-                }else{
+            sms[i] = item.trim();
+        });
+        // 기본 데이터설정
+        var data = {
+            origin:sms.join("|"), // 등록된 원문(줄바꿈만 "|"로 변경)
+            date:(function(d){return toStr(d.getFullYear())+toStr(d.getMonth()+1)+toStr(d.getDate())+toStr(d.getHours())+toStr(d.getMinutes())})(new Date()), // 현재날짜.
+            price:0, // 금액
+            type:"", // 국민봉올림 | 국민마올림 | 현대M | 현대ZERO | 생활비현금 | 생활비이체
+            store:"", // 사용처
+            comment:"" // 추가 내용.
+        };
+
+        // 결제방법(type) 구하기
+        if( (/7\*0\*/).test(data.origin) ){
+            data.type = "국민봉올림";
+        }else if( (/7\*1\*/).test(data.origin) ){
+            data.type = "국민마올림";
+        }else if( (/(현대카드 M)/).test(data.origin) ){
+            data.type = "현대M";
+        }else if( (/(현대카드 ZERO)/).test(data.origin) ){
+            data.type = "현대ZERO";
+        }else if( (/349402/).test(data.origin) ){
+            data.type = "생활비이체";
+        }else{
+            data.type = "생활비현금";
+        };
+
+        if(data.type == "생활비이체"){
+            var accountText = sms[0].split(" ");
+
+            // 시간구하기
+            data.date = (accountText[0] +""+ accountText[2]).replace(/[^\d]+/g, '');
+            data.price = (accountText[accountText.length-1]).replace(/[^\d]+/g, '');
+            data.store = sms[1].replace("출금", '');
+            data.comment = sms[sms.length-1];
+
+        }else if(data.type == "생활비현금") {
+            // 현금일때
+            data.price = sms[0];
+            data.comment = sms[1];
+        }else{
+            // 카드일때
+            // 금액 구하기
+            data.price = ((data.origin.match(/([0-9,]+)(원?)/))[1]).replace(/[^\d]+/g, '');
+
+            // 사용처 구하기
+            $(sms).each(function(i,item){
+                if( (/([0-9,]+)(원)/).test(item) ){
                     data.store = sms[i+1];
                 };
-            };
-        });
+            });
 
-        // 코멘트 구하기
-        data.comment = sms[sms.length-1];
-        data.comment = (/누적/).test(data.comment) ? "" : data.comment;
+            // 코멘트 구하기
+            data.comment = sms[sms.length-1];
+            data.comment = (/누적/).test(data.comment) ? "" : data.comment;
 
-        // 시간구하기
-        var date = ((data.origin.match(/([0-9]{2})(\/)([0-9]{2})/))[0]).split("/"); // 날짜
-        var time = ((data.origin.match(/([0-9]{2})(\:)([0-9]{2})/))[0]).split(":");; // 시간
-        var yyyy = new Date().getFullYear()+"";
-        data.date = yyyy+""+date.join("")+""+time.join("");
+            // 시간구하기
+            var date = ((data.origin.match(/([0-9]{2})(\/)([0-9]{2})/))[0]).split("/"); // 날짜
+            var time = ((data.origin.match(/([0-9]{2})(\:)([0-9]{2})/))[0]).split(":");; // 시간
+            var yyyy = new Date().getFullYear()+"";
+            data.date = yyyy+""+date.join("")+""+time.join("");
+        };
+
+        var str = data.type+"\n"+data.price+"\n"+data.store+"\n"+data.comment+"\n맞나요?";
+        if(confirm(str)){
+            $.ajax({
+                method: "POST",
+                url: "https://script.google.com/macros/s/AKfycbw3KsXcgcrixfPJhBWbCCzWM5Re7qBJa54BNylgUT3_DSrupi0/exec",
+                data: data
+            }).done(function( msg ) {
+                alert("저장되었습니다.");
+                $("#sms").val("");
+            });
+        };
     };
-
-    var str = data.type+"\n"+data.price+"\n"+data.store+"\n"+data.comment+"\n맞나요?";
-    if(confirm(str)){
-        $.ajax({
-            method: "POST",
-            url: "https://script.google.com/macros/s/AKfycbw3KsXcgcrixfPJhBWbCCzWM5Re7qBJa54BNylgUT3_DSrupi0/exec",
-            data: data
-        }).done(function( msg ) {
-            alert("저장되었습니다.");
-            $("#sms").val("");
-        });
-    };
-};
 </script>
 </body>
 </html>
