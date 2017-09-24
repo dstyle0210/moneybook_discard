@@ -68,6 +68,14 @@
             data.price = ((data.origin.match(/([0-9,]+)(원)/))[1]).replace(/[^\d]+/g, '');
 
             // 사용처 구하기
+            /*
+            [Web발신]
+            KB국민카드7*0*승인
+            원*봉
+            154,000원 일시불
+            09/23 20:44
+            (주)기쁨앤미소
+             */
             $(sms).each(function(i,item){
                 if( (/([0-9,]+)(원)/).test(item) ){
                     if(data.type=="국민마올림"){
@@ -80,7 +88,7 @@
 
             // 코멘트 구하기
             data.comment = sms[sms.length-1];
-            data.comment = (/누적/).test(data.comment) ? "" : data.comment;
+            data.comment = ((/누적/).test(data.comment) || (data.comment == data.store)) ? "" : data.comment;
 
             // 시간구하기
             var date = ((data.origin.match(/([0-9]{2})(\/)([0-9]{2})/))[0]).split("/"); // 날짜
