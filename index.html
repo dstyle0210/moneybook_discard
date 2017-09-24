@@ -17,9 +17,12 @@
 <script>
     function toStr(n){return (n<10) ? "0"+n : ""+n};
     function cleanup(){
-        var sms = $("#sms").val().split(/\n/);
-        $(sms).each(function(i,item){
-            sms[i] = item.trim();
+        var origin = $("#sms").val().split(/\n/);
+        var sms = [];
+        $(origin).each(function(i,item){
+            if(!(/누적/).test(item) ){
+                sms.push(item.trim());
+            };
         });
         // 기본 데이터설정
         var data = {
