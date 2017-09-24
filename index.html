@@ -62,7 +62,7 @@
         }else{
             // 카드일때
             // 금액 구하기
-            data.price = ((data.origin.match(/([0-9,]+)(원?)/))[1]).replace(/[^\d]+/g, '');
+            data.price = ((data.origin.match(/([0-9,]+)(원)/))[1]).replace(/[^\d]+/g, '');
 
             // 사용처 구하기
             $(sms).each(function(i,item){
