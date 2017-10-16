@@ -31,6 +31,9 @@ SK브로드밴드 출금
 
 -->
 <style>
+.total{padding-top:10px;text-align:center;}
+.total strong{font-size:16px;}
+.total p{font-size:11px;}
 .list{width:100%;background:#f5f5f5;}
 .list article{box-sizing:border-box;padding:10px;margin-top:5px;border:1px solid #ccc;border-radius:5px;background:#fff;}
 .list article > *{margin:0;padding:0;line-height:1;}
@@ -47,8 +50,10 @@ SK브로드밴드 출금
     </div>
     <div class="row">
         <div class="list" id="app">
-            <strong>카드 : {{ price }}원</strong>
-            <strong>현금 : {{ cash }}원</strong>
+            <div class="total">
+                <strong>지출 : {{ total }}</strong><br />
+                <span>카드 : {{ price }}원 , 현금 : {{ cash }}원</span>
+            </div>
             <article v-for="book in books">
                 <span class="date">{{ book.datestr }} | {{ book.type }}</span>
                 <div>
@@ -146,7 +151,7 @@ function cleanup(){
 
 
 function view(){
-    $.get("https://docs.google.com/spreadsheets/d/e/2PACX-1vR7bdbW90fSse9TyBRw_5q3MI1oqzZHaWV5ICSh_6cPb7iyHFT4zrXWuA7Pes08qgKwQlGRnSDE6BPk/pub?output=tsv",function(res){
+    $.get("https://docs.google.com/spreadsheets/d/e/2PACX-1vR7bdbW90fSse9TyBRw_5q3MI1oqzZHaWV5ICSh_6cPb7iyHFT4zrXWuA7Pes08qgKwQlGRnSDE6BPk/pub?output=tsv&"+ new Date().getTime(),function(res){
         var book = res.split(/\n/);
         var keys = [];
         var data = [];
@@ -168,6 +173,7 @@ function view(){
 
         var price = 0; // 카드값
         var cash = 0; // 현금,이체
+        var total = 0; // 총금액
         $(data).each(function(idx,item){
             item.datestr = (item.date).substr(0,4)+"년"+(item.date).substr(4,2)+"월"+(item.date).substr(6,2)+"일 "+(item.date).substr(8,2)+":"+(item.date).substr(10,2)+"";
             item.pricestr = (item.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -175,13 +181,17 @@ function view(){
             price = price + (item.price*1);
             cash = cash + (item.cash*1);
         });
+        total = (price + cash).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        price = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        cash = cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
         var app = new Vue({
             el: '#app',
             data: {
                 books: data.reverse(),
                 price:price,
-                cash:cash
+                cash:cash,
+                total:total
             }
         })
     });
