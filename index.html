@@ -106,7 +106,7 @@ function cleanup(){
         data.date = yyyy+""+date.join("")+""+time.join("");
     };
 
-    var str = data.type+"\n"+data.price+"\n"+data.store+"\n"+data.comment+"\n맞나요?";
+    var str = data.type+"\n"+((data.price!=0) ? data.price : data.cash)+"\n"+data.store+"\n"+data.comment+"\n맞나요?";
     if(confirm(str)){
         $.ajax({
             method: "POST",
@@ -118,6 +118,10 @@ function cleanup(){
         });
     };
 };
+$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/2PACX-1vR7bdbW90fSse9TyBRw_5q3MI1oqzZHaWV5ICSh_6cPb7iyHFT4zrXWuA7Pes08qgKwQlGRnSDE6BPk/od6/public/values?alt=json", function(data) {
+    //first row "title" column
+    console.log(data.feed.entry[0]['gsx$title']['$t']);
+});
 </script>
 </body>
 </html>
