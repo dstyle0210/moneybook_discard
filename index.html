@@ -8,6 +8,27 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
 </head>
 <body>
+<!--
+[Web발신]
+KB국민카드(7*1*)
+홍*영님
+09/14 01:53
+18,160원
+SK플래닛-페이코 스타샵 사용
+<11번가 코디휴지>
+
+[Web발신]
+KB국민카드7*1* 승인
+홍*영
+5,650원 일시불 09/21 17:59
+사과나무슈퍼
+커피우유 꽁기꽁기
+
+2017.09.21 목요일 20:14 349402-**-***677 59,917
+SK브로드밴드 출금
+불광
+
+-->
 <div class="container-fluid">
     <div class="row">
         <textarea id="sms" style="width:100%;height:200px;"></textarea>
@@ -25,7 +46,8 @@ function cleanup(){
     var data = {
         origin:sms.join("|"), // 등록된 원문(줄바꿈만 "|"로 변경)
         date:(function(d){return toStr(d.getFullYear())+toStr(d.getMonth()+1)+toStr(d.getDate())+toStr(d.getHours())+toStr(d.getMinutes())})(new Date()), // 현재날짜.
-        price:0, // 금액
+        price:0, // 카드금액
+        cash:0, // 현금금액
         type:"", // 국민봉올림 | 국민마올림 | 현대M | 현대ZERO | 생활비현금 | 생활비이체
         store:"", // 사용처
         comment:"" // 추가 내용.
@@ -46,26 +68,32 @@ function cleanup(){
         data.type = "생활비현금";
     };
 
-    if((/(생활비)/).test(data.type)){
+    if(data.type == "생활비이체"){
+        var accountText = sms[0].split(" ");
+        data.date = (accountText[0] +""+ accountText[2]).replace(/[^\d]+/g, ''); // 시간구하기
+        data.cash = (accountText[4]).replace(/[^\d]+/g, '');
+        data.store = accountText[5];
+        data.comment = (sms[1]) ? sms[1] : "";
+    }else if(data.type == "생활비현금") {
         // 현금일때
-        data.price = sms[0];
+        data.cash = sms[0];
         data.comment = sms[1];
-        data.store = (data.type=="생활비이체") ? "국민은행" : "";
     }else{
         // 카드일때
         // 금액 구하기
-        data.price = ((data.origin.match(/([0-9,]+)(원)/))[1]).replace(/[^\d]+/g, '');
+        data.price = ((data.origin.match(/([0-9,]+)(원?)/))[1]).replace(/[^\d]+/g, '');
 
         // 사용처 구하기
         $(sms).each(function(i,item){
-            if( (/([0-9]{2})(\:)([0-9]{2})/).test(item) ){
-                if(data.type=="국민마올림"){
-                    data.store = sms[i+2];
-                }else{
+            if( (/([0-9,]+)(원)/).test(item) ){
+                if(data.type == "국민마올림"){
                     data.store = sms[i+1];
-                };
+                }else{
+                    data.store = sms[i+2];
+                }
             };
         });
+
 
         // 코멘트 구하기
         data.comment = sms[sms.length-1];
