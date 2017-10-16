@@ -6,6 +6,7 @@
     <title>우리집가계부</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
 </head>
 <body>
 <!--
@@ -29,10 +30,34 @@ SK브로드밴드 출금
 불광
 
 -->
+<style>
+.list{width:100%;background:#f5f5f5;}
+.list article{box-sizing:border-box;padding:10px;margin-top:5px;border:1px solid #ccc;border-radius:5px;background:#fff;}
+.list article > *{margin:0;padding:0;line-height:1;}
+.list article .date{font-size:11px;}
+.list article > div{width:100%;overflow:hidden;}
+.list article h2{float:left;font-size:15px;font-weight:700;}
+.list article .money{float:right;font-size:15px;}
+.list article p{font-size:13px;text-align:right;}
+</style>
 <div class="container-fluid">
     <div class="row">
         <textarea id="sms" style="width:100%;height:200px;"></textarea>
         <div style="width:100%;padding-top:10px;"><button type="button" class="btn btn-info btn-lg btn-block" onclick="cleanup();">등록하기</button></div>
+    </div>
+    <div class="row">
+        <div class="list" id="app">
+            <strong>카드 : {{ price }}원</strong>
+            <strong>현금 : {{ cash }}원</strong>
+            <article v-for="book in books">
+                <span class="date">{{ book.datestr }} | {{ book.type }}</span>
+                <div>
+                    <h2>{{ book.store }}</h2>
+                    <span class="money">{{ book.price==0 ? book.cashstr : book.pricestr }}원</span>
+                </div>
+                <p>{{ book.comment }}</p>
+            </article>
+        </div>
     </div>
 </div>
 <script>
@@ -81,15 +106,15 @@ function cleanup(){
     }else{
         // 카드일때
         // 금액 구하기
-        data.price = ((data.origin.match(/([0-9,]+)(원?)/))[1]).replace(/[^\d]+/g, '');
+        data.price = ((data.origin.match(/([0-9,]+)(원)/))[1]).replace(/[^\d]+/g, '');
 
         // 사용처 구하기
         $(sms).each(function(i,item){
-            if( (/([0-9,]+)(원)/).test(item) ){
+            if( (/([0-9]{2})(\:)([0-9]{2})/).test(item) ){
                 if(data.type == "국민마올림"){
-                    data.store = sms[i+1];
-                }else{
                     data.store = sms[i+2];
+                }else{
+                    data.store = sms[i+1];
                 }
             };
         });
@@ -118,9 +143,51 @@ function cleanup(){
         });
     };
 };
-$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/2PACX-1vR7bdbW90fSse9TyBRw_5q3MI1oqzZHaWV5ICSh_6cPb7iyHFT4zrXWuA7Pes08qgKwQlGRnSDE6BPk/od6/public/values?alt=json", function(data) {
-    //first row "title" column
-    console.log(data.feed.entry[0]['gsx$title']['$t']);
+
+
+function view(){
+    $.get("https://docs.google.com/spreadsheets/d/e/2PACX-1vR7bdbW90fSse9TyBRw_5q3MI1oqzZHaWV5ICSh_6cPb7iyHFT4zrXWuA7Pes08qgKwQlGRnSDE6BPk/pub?output=tsv",function(res){
+        var book = res.split(/\n/);
+        var keys = [];
+        var data = [];
+        $(book).each(function(idx){
+            if(idx==0){
+            }else{
+                var datas = this.split(/\t/);
+                data.push({
+                    "date":datas[0],
+                    "store":datas[1],
+                    "price":datas[2],
+                    "cash":datas[3],
+                    "type":datas[4],
+                    "comment":datas[5],
+                    "origin":datas[6]
+                });
+            };
+        });
+
+        var price = 0; // 카드값
+        var cash = 0; // 현금,이체
+        $(data).each(function(idx,item){
+            item.datestr = (item.date).substr(0,4)+"년"+(item.date).substr(4,2)+"월"+(item.date).substr(6,2)+"일 "+(item.date).substr(8,2)+":"+(item.date).substr(10,2)+"";
+            item.pricestr = (item.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            item.cashstr = (item.cash).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            price = price + (item.price*1);
+            cash = cash + (item.cash*1);
+        });
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                books: data.reverse(),
+                price:price,
+                cash:cash
+            }
+        })
+    });
+};
+$(function(){
+    view();
 });
 </script>
 </body>
