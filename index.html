@@ -126,10 +126,8 @@ function cleanup(){
             data: data
         }).done(function( msg ) {
             alert("저장되었습니다.");
-            $("#sms").val("");
-            $("#app").html("");
             setTimeout(function(){
-                view();
+                location.reload();
             },1000);
         });
     };
