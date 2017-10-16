@@ -3,33 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>우리집가계부</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
     <script src="https://unpkg.com/vue"></script>
 </head>
 <body>
-<!--
-[Web발신]
-KB국민카드(7*1*)
-홍*영님
-09/14 01:53
-18,160원
-SK플래닛-페이코 스타샵 사용
-<11번가 코디휴지>
-
-[Web발신]
-KB국민카드7*1* 승인
-홍*영
-5,650원 일시불 09/21 17:59
-사과나무슈퍼
-커피우유 꽁기꽁기
-
-2017.09.21 목요일 20:14 349402-**-***677 59,917
-SK브로드밴드 출금
-불광
-
--->
 <style>
 .total{padding-top:10px;text-align:center;}
 .total strong{font-size:16px;}
@@ -151,8 +133,9 @@ function cleanup(){
 };
 
 $.ajaxSetup({ cache: false });
+
 function view(){
-    $.get("https://docs.google.com/spreadsheets/d/e/2PACX-1vR7bdbW90fSse9TyBRw_5q3MI1oqzZHaWV5ICSh_6cPb7iyHFT4zrXWuA7Pes08qgKwQlGRnSDE6BPk/pub?output=tsv&"+ new Date().getTime(),function(res){
+    $.get("https://docs.google.com/spreadsheets/d/e/2PACX-1vR7bdbW90fSse9TyBRw_5q3MI1oqzZHaWV5ICSh_6cPb7iyHFT4zrXWuA7Pes08qgKwQlGRnSDE6BPk/pub?output=tsv",function(res){
         var book = res.split(/\n/);
         var keys = [];
         var data = [];
