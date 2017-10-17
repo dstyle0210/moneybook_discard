@@ -161,6 +161,10 @@ function view(){
             };
         });
 
+        data.sort(function(a, b){
+            return a.date - b.date;
+        });
+
         var price = 0; // 카드값
         var cash = 0; // 현금,이체
         var total = 0; // 총금액
@@ -187,7 +191,7 @@ function view(){
         var app = new Vue({
             el: '#app',
             data: {
-                books: data.reverse(),
+                books: data,
                 price:price,
                 cash:cash,
                 total:total
