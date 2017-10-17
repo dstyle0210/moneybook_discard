@@ -103,8 +103,7 @@ function cleanup(){
         // 사용처 구하기
         $(sms).each(function(i,item){
             if( (/([0-9]{2})(\:)([0-9]{2})/).test(item) ){
-                console.log( sms[i-2] +","+sms[i-1] );
-                if((/승인/).test(sms[i-2]) || (/승인/).test(sms[i-1])){
+                if((/승인/).test(sms[i-3]) || (/승인/).test(sms[i-2]) || (/승인/).test(sms[i-1])){
                     data.store = sms[i+1]; // 국민봉올림 , 국민마올림 7*1*
                 }else{
                     data.store = sms[i+2]; // 국민마올림 (7*1*)
