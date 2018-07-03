@@ -13,6 +13,8 @@
 <body>
 <style>
 body{padding:0;margin:0;}
+.tabSec{width:100%;overflow:hidden;}
+.tabSec > a{float:left;display:block;box-sizing:border-box;width:50%;height:30px;line-height:30px;text-align:center;background:#f5f5f5;border:1px solid #ccc;color:#333;text-decoration:none;font-size:14px;}
 .consoleSec{font-size:12px;text-align:center;background:#087196;color:#fff;overflow:hidden;}
 .consoleSec p{padding:0;margin:0;}
 .smsform{box-sizing:border-box;padding:10px;width:100%;}
@@ -25,7 +27,8 @@ body{padding:0;margin:0;}
 .detail div input{width:100%;}
 .detail p{width:100%;clear:both;}
 .detail p button{width:100%;padding:10px 0;background:#087196;color:#fff;border:0;}
-.list{box-sizing:border-box;width:100%;padding:0 10px;}
+.detail select{width:100%;height:22px;}
+.list{box-sizing:border-box;width:100%;padding:0 10px 10px;}
 .list *{padding:0;margin:0;}
 .list article{box-sizing:border-box;padding:5px 10px;margin-top:5px;border:1px solid #ccc;border-radius:5px;background:#fff;}
 .list article.km{border-top:3px solid #dc3545;}
@@ -40,6 +43,10 @@ body{padding:0;margin:0;}
 .list article p{font-size:13px;text-align:right;}
 </style>
 <section class="consoleSec" id="console"><p></p></section>
+<div class="tabSec">
+    <a href="#">쓰기</a>
+    <a href="#">목록</a>
+</div>
 <section class="smsform">
     <textarea name="" id="test" cols="30" rows="10"></textarea>
     <button onclick="make();">정보가져오기</button>
@@ -47,10 +54,18 @@ body{padding:0;margin:0;}
 <div id="app">
     <article class="detail">
         <div><input type="text" v-model="form.date" placeholder="사용시간"></div>
-        <div><input type="text" v-model="form.category" placeholder="카테고리"></div>
+        <div>
+            <select v-model="form.category">
+                <option v-for="cate in category" v-bind:value="cate.list">{{cate.list}}</option>
+            </select>
+        </div>
         <div><input type="text" v-model="form.store" placeholder="사용처"></div>
         <div><input type="text" v-model="form.price" placeholder="금액"></div>
-        <div><input type="text" v-model="form.method" placeholder="결제별명"></div>
+        <div>
+            <select v-model="form.method">
+                <option v-for="nick in nicks" v-bind:value="nick.list">{{nick.list}}</option>
+            </select>
+        </div>
         <div><input type="text" v-model="form.comment" placeholder="코멘트"></div>
         <p><button @click="upload">올려보자</button></p>
         <input type="hidden" v-model="form.type" placeholder="card | transfer | cash">
@@ -61,7 +76,7 @@ body{padding:0;margin:0;}
         <span class="date">{{ book.date }} | {{ book.type }}</span>
         <div>
             <h2>{{ book.store }}</h2>
-            <span class="money">{{ book.price }}원</span>
+            <span class="money">{{ book.dotprice }}원</span>
         </div>
         <p>{{ book.comment }}</p>
     </article>
@@ -72,6 +87,21 @@ body{padding:0;margin:0;}
 var app;
 $(function(){
     var $console = $("#console p");
+    var P_LIST_NICK = new Promise(function(resolve,rej){
+        $.get(mbook.url.LIST_NICK,function(res){
+            $console.html("결제별명 목록 다운로드 완료.");
+            mbook.db.LIST_NICK = mbook.impl.tsvtomap(res);
+            resolve();
+        });
+    });
+    var P_LIST_CATEGORY = new Promise(function(resolve,rej){
+        $.get(mbook.url.LIST_CATEGORY,function(res){
+            $console.html("카테고리 목록 다운로드 완료.");
+            mbook.db.LIST_CATEGORY = mbook.impl.tsvtomap(res);
+            resolve();
+        });
+    });
+
     var P_ORIGIN_STORE = new Promise(function(resolve,rej){
         $.get(mbook.url.ORIGIN_STORE,function(res){
             $console.html("사용처 데이터 다운로드 완료.");
@@ -82,7 +112,7 @@ $(function(){
 
     var P_WORD_CATEGORY = new Promise(function(resolve,rej){
         $.get(mbook.url.WORD_CATEGORY,function(res){
-            $console.html("카테고리 데이터 다운로드 완료.");
+            $console.html("사용처와 카테고리 매칭 데이터 다운로드 완료.");
             mbook.db.WORD_CATEGORY = mbook.impl.tsvtomap(res);
             resolve();
         });
@@ -104,14 +134,18 @@ $(function(){
         });
     });
 
-    Promise.all([P_ORIGIN_STORE,P_WORD_CATEGORY,P_LIST,P_BOOK]).then(function(){
+    Promise.all([P_ORIGIN_STORE,P_WORD_CATEGORY,P_LIST,P_BOOK,P_LIST_CATEGORY,P_LIST_NICK]).then(function(){
         $console.html("다운로드 완료");
         $console.delay(1000).animate({"height":0},500);
-        console.log(mbook.db.LIST);
+        $.each(mbook.db.LIST,function(idx,cell){
+            cell.dotprice = cell.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        });
         app = new Vue({
             el: '#app',
             data: {
-                list: mbook.db.LIST,
+                list: mbook.db.LIST.reverse(),
+                category:mbook.db.LIST_CATEGORY,
+                nicks:mbook.db.LIST_NICK,
                 form: mbook.vo
             },
             methods:{
@@ -162,7 +196,7 @@ mbook.impl = {
                 if(idx==0){
                     keys.push( cell.trim() );
                 }else{
-                    temp[keys[i]] = datas[i];
+                    temp[keys[i]] = datas[i].trim();
                 };
             });
             data.push(temp);
@@ -170,12 +204,6 @@ mbook.impl = {
         data.shift(); // 첫번째 항목은 버림.
         return data;
     },
-    /*
-     [Web발신]|KB국민카드(7*1*)|홍*영님|12/02 01:50|22,490원|옥션 스타샵 사용|서방님 폴햄 라이트 다운베스트
-     [Web발신]|KB국민카드7*0*승인|원*봉|42,000원 일시불|12/02 15:18|롯데몰 은평 송추가마골반상|누적3,836,068원|소고기 반상: 2인
-     [Web발신]|KB국민카드7*1* 승인|홍*영|8,400원 일시불 12/02 16:14|(주)티몬|마용 융레깅스
-     [Web발신]|현대카드 ZERO 승인|원*봉|54,060원 일시불|12/05 17:09|11번가_11Pay|누적95,113원|피지오겔 크림 150ml 4개
-    */
     findStoreOrigin:function(smsText){
         var wh = 5;
         if((/KB국민카드7\*1\*/).test(smsText)){
@@ -196,7 +224,9 @@ mbook.url = {
     LIST:mbook.impl.makeReadUrl("0"),
     BOOK:mbook.impl.makeReadUrl("1301384578"),
     ORIGIN_STORE:mbook.impl.makeReadUrl("1829870897"),
-    WORD_CATEGORY:mbook.impl.makeReadUrl("766723916")
+    WORD_CATEGORY:mbook.impl.makeReadUrl("766723916"),
+    LIST_CATEGORY:mbook.impl.makeReadUrl("1428284449"),
+    LIST_NICK:mbook.impl.makeReadUrl("1664499784")
 };
 
 $.extend(mbook,{
@@ -334,6 +364,11 @@ function make(){
     var bill = mbook.vo;
     bill.sms = mbook.conv.common.smsToText( $("#test").val() ); // 문자 원문 변환
     bill.method = mbook.conv.common.getMethod(bill.sms); // 결제방식 처리.
+
+    $.each(app.nicks,function(idx,nick){
+        console.log(nick.list==bill.method);
+    });
+
     bill.type = mbook.conv.common.getType(bill.method);
     bill.date = mbook.conv[bill.type].getDate(bill.sms); // 날짜 구하기
     bill.store = mbook.conv[bill.type].getStore(bill.sms); // 사용처 구하기
