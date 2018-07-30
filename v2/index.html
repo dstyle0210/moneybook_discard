@@ -12,15 +12,18 @@
 </head>
 <body>
 <style>
-body{padding:0;margin:0;}
+body,p{padding:0;margin:0;}
+i{font-style:normal;}
 .tabSec{width:100%;overflow:hidden;}
 .tabSec > a{float:left;display:block;box-sizing:border-box;width:50%;height:30px;line-height:30px;text-align:center;background:#f5f5f5;border:1px solid #ccc;color:#333;text-decoration:none;font-size:14px;}
-.consoleSec{font-size:12px;text-align:center;background:#087196;color:#fff;overflow:hidden;}
-.consoleSec p{padding:0;margin:0;}
+.consoleSec{box-sizing:border-box;padding:0 10px;width:100%;overflow:hidden;}
+.consoleSec p{margin:0;padding:3px 0;font-size:12px;text-align:center;background:#087196;color:#fff;overflow:hidden;}
 .smsform{box-sizing:border-box;padding:10px;width:100%;}
 .smsform *{box-sizing:border-box;}
 .smsform textarea{padding:10px;width:100%;font-size:14px;}
 .smsform button{width:100%;padding:10px 0;background:#087196;color:#fff;border:0;}
+.filter{box-sizing:border-box;padding:10px;width:100%;}
+.filter select{box-sizing:border-box;height:30px;width:100%;}
 .detail{box-sizing:border-box;padding:10px;width:100%;overflow:hidden;}
 .detail *{box-sizing:border-box;}
 .detail div{float:left;padding:5px;height:35px;width:50%;text-align:center;overflow:hidden;}
@@ -29,6 +32,8 @@ body{padding:0;margin:0;}
 .detail p button{width:100%;padding:10px 0;background:#087196;color:#fff;border:0;}
 .detail select{width:100%;height:22px;}
 .list{box-sizing:border-box;width:100%;padding:0 10px 10px;}
+.listSumLen{text-align:right;}
+.listSumLen i{color:#dc3545;}
 .list *{padding:0;margin:0;}
 .list article{box-sizing:border-box;padding:5px 10px;margin-top:5px;border:1px solid #ccc;border-radius:5px;background:#fff;}
 .list article.km{border-top:3px solid #dc3545;}
@@ -43,12 +48,16 @@ body{padding:0;margin:0;}
 .list article h2{float:left;font-size:15px;font-weight:700;}
 .list article .money{float:right;font-size:15px;}
 .list article p{padding-top:5px;font-size:13px;text-align:right;}
+table{border-spacing:0;border-collapse:collapse}
+.detailTable{width:100%;margin:0 auto;}
+.detailTable tr[class^=to] th,.detailTable tr[class^=to] td{font-weight:700;font-size:15px;}
+.detailTable th{font-size:13px;font-weight:400;padding-left:10px;text-align:left;border:1px solid #ccc;}
+.detailTable td{font-size:13px;font-weight:400;padding-right:10px;text-align:right;border:1px solid #ccc;}
+.detailTable .tofix{background:#17a2b8;}
+.detailTable .toreq{background:#ffc107;}
+.detailTable .toloss{background:#dc3545;}
+.detailTable .total{background:#868e96;}
 </style>
-
-<div class="tabSec">
-    <a href="#">쓰기</a>
-    <a href="#">목록</a>
-</div>
 <section class="smsform">
     <textarea name="" id="test" cols="30" rows="10"></textarea>
     <button onclick="make();">정보가져오기</button>
@@ -74,22 +83,41 @@ body{padding:0;margin:0;}
         <input type="hidden" v-model="form.type" placeholder="card | transfer | cash">
         <input type="hidden" v-model="form.sms" placeholder="원문">
     </article>
+    <!--
+    <div class="detail">
+        <table class="detailTable">
+            <tr v-for="desc in book" v-bind:class="[desc.trCn]">
+                <th>{{desc.title}}</th>
+                <td>{{desc.result}}</td>
+            </tr>
+        </table>
+    </div>
+    -->
+    <div class="filter">
+        <select name="" id="" @change="sort" v-model="selected">
+            <option value="전체">전체</option>
+            <option v-for="option in category" v-bind:value="option.list">{{option.list}}</option>
+        </select>
+    </div>
+
     <div class="list">
-    <article v-for="book in list" v-bind:class="[book.cardCn]">
-        <span class="date">{{ book.date }} | {{ book.method }}</span>
-        <div>
-            <h2>{{ book.store }}</h2>
-            <span class="money">{{ book.dotprice }}원</span>
-        </div>
-        <p>{{ book.comment }}</p>
-    </article>
+        <p class="listSumLen">총 <strong><i>{{sum}}</i>원</strong>( <i>{{len}}</i>건 )</p>
+        <article v-for="bill in list" v-bind:class="[bill.cardCn]">
+            <span class="date">{{ bill.date }} | {{ bill.method }}</span>
+            <div>
+                <h2>{{ bill.store }}</h2>
+                <span class="money">{{ bill.dotprice }}원</span>
+            </div>
+            <p>{{ bill.comment }}</p>
+        </article>
     </div>
 </div>
 <script type="text/javascript">
 // 프로미스로, 필터 다운로드
 var app;
 $(function(){
-    var $console = $("#console p");
+    var $consoleCase = $("#console");
+    var $console = $consoleCase.find("p");
     var P_LIST_NICK = new Promise(function(resolve,rej){
         $console.html("결제별명 목록 다운로드 시작.");
         $.get(mbook.url.LIST_NICK,function(res){
@@ -143,10 +171,11 @@ $(function(){
 
     Promise.all([P_ORIGIN_STORE,P_WORD_CATEGORY,P_LIST,P_BOOK,P_LIST_CATEGORY,P_LIST_NICK]).then(function(){
         $console.html("다운로드 완료");
-        $console.delay(1000).animate({"height":0},500);
+        $consoleCase.delay(1000).animate({"height":0},500);
         $.each(mbook.db.LIST,function(idx,cell){
             cell.sortdate = (cell.date.match(/([0-9]+)/g).join('') )*1; // 내림차순 정렬을 위해 날짜정보 숫자로 변환
             cell.dotprice = cell.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 금액에 점처리
+            cell.price = cell.price * 1;
             switch (cell.method){
                 case "국민봉올림":
                     cell.cardCn = "kb";break;
@@ -164,29 +193,65 @@ $(function(){
         });
         mbook.db.LIST.sort(function(a,b){ return a.sortdate- b.sortdate; }).reverse();// 내림차순 적용
 
+        // 상세내역 정리
+        $.each(mbook.db.BOOK,function(idx,cell){
+            cell.result = cell.result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 금액에 점처리
+            cell.trCn = "";
+            switch (cell.title){
+                case "고정비총합" :
+                    cell.trCn = "tofix";
+                    break;
+                case "필수비총합" :
+                    cell.trCn = "toreq";
+                    break;
+                case "변동비총합" :
+                    cell.trCn = "toloss";
+                    break;
+                case "총지출" :
+                    cell.trCn = "total";
+                    break;
+            }
+        });
+
         app = new Vue({
             el: '#app',
             data: {
-                list: mbook.db.LIST,
+                list: mbook.db.LIST, // 가계부에 표시되는 목록
+                origin: mbook.db.LIST, // 전체 가계부 목록
+                sum : 0, // 표시되는 가계부(this.list)의 총합
+                len : 0, // 표시되는 가계부(this.list)의 갯수
                 category:mbook.db.LIST_CATEGORY,
+                selected:"전체",
                 nicks:mbook.db.LIST_NICK,
-                form: mbook.vo
+                form: mbook.vo,
+                book:mbook.db.BOOK
+            },
+            mounted:function(){ // lifeCycle hook
+                this.sumUpdate();
+                this.len = this.list.length;
+            },
+            updated:function(){ // lifeCycle hook
+                this.sumUpdate();
+                this.len = this.list.length;
             },
             methods:{
                 upload:function(){
                     app.form.category = app.form.category.trim();
-                    $console.height("auto").html("사용내역을 업로드 합니다.");
+                    $consoleCase.height("auto");
+                    $console.html("사용내역을 업로드 합니다.");
                     $.ajax({
                         method: "POST",
                         url: "https://script.google.com/macros/s/AKfycbw3KsXcgcrixfPJhBWbCCzWM5Re7qBJa54BNylgUT3_DSrupi0/exec",
                         data: app.form
                     }).done(function( msg ) {
-                        $console.height("auto").html("사용내역이 저장 되었습니다.");
+                        $consoleCase.height("auto");
+                        $console.html("사용내역을 저장 되었습니다");
                         window.location.reload();
                     });
                 },
                 reset:function(){
-                    $console.height("auto").html("지출목록을 다시 가져옵니다.");
+                    $consoleCase.height("auto");
+                    $console.html("지출목록을 다시 가져옵니다.");
                     $.get({
                         url:mbook.url.LIST,
                         cache : false
@@ -194,8 +259,30 @@ $(function(){
                         console.log(res);
                         mbook.db.LIST = mbook.impl.tsvtomap(res);
                         this.list = mbook.db.LIST;
-                        $console.height("auto").html("지출목록 다운로드 완료.").delay(1000).animate({"height":0},500);
+                        $console.html("지출목록 다운로드 완료.");
+                        $consoleCase.height("auto").delay(1000).animate({"height":0},500);
                     });
+                },
+                sumUpdate:function(){
+                    var tempSum = 0;
+                    $.each(this.list,function(idx,item){
+                        tempSum += item.price;
+                    });
+                    this.sum = tempSum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                },
+                sort:function(){
+                    var tempDB = [];
+                    var word = this.selected;
+                    if(word=="전체"){
+                        this.list = this.origin;
+                        return;
+                    };
+                    $.each(this.origin,function(idx,item){
+                        if(item.category==word){
+                            tempDB.push(item);
+                        };
+                    });
+                    this.list = tempDB;
                 }
             }
         });
