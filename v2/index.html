@@ -47,7 +47,9 @@ i{font-style:normal;}
 .list article > div{width:100%;overflow:hidden;}
 .list article h2{float:left;font-size:15px;font-weight:700;}
 .list article .money{float:right;font-size:15px;}
-.list article p{padding-top:5px;font-size:13px;text-align:right;}
+.list article p.desc{display:block;width:100%;padding-top:5px;font-size:13px;overflow:hidden;}
+.list article p.desc .category{display:block;float:left;}
+.list article p.desc .comment{display:block;float:right;}
 table{border-spacing:0;border-collapse:collapse}
 .detailTable{width:100%;margin:0 auto;}
 .detailTable tr[class^=to] th,.detailTable tr[class^=to] td{font-weight:700;font-size:15px;}
@@ -103,12 +105,14 @@ table{border-spacing:0;border-collapse:collapse}
     <div class="list">
         <p class="listSumLen">총 <strong><i>{{sum}}</i>원</strong>( <i>{{len}}</i>건 )</p>
         <article v-for="bill in list" v-bind:class="[bill.cardCn]">
-            <span class="date">{{ bill.date }} | {{ bill.method }}</span>
+            <span class="date">{{ bill.date }} | {{ bill.category }}</span>
             <div>
                 <h2>{{ bill.store }}</h2>
                 <span class="money">{{ bill.dotprice }}원</span>
             </div>
-            <p>{{ bill.comment }}</p>
+            <p class="desc">
+                <span class="comment">{{ bill.comment }}</span>
+            </p>
         </article>
     </div>
 </div>
@@ -212,7 +216,7 @@ $(function(){
                     break;
             }
         });
-
+        console.log(mbook.db.LIST);
         app = new Vue({
             el: '#app',
             data: {
