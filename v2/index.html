@@ -119,6 +119,7 @@ table{border-spacing:0;border-collapse:collapse}
 <script type="text/javascript">
 // 프로미스로, 필터 다운로드
 var app;
+var localBills; // 디바이스 안에 저장될 지출목록
 $(function(){
     var $consoleCase = $("#console");
     var $console = $consoleCase.find("p");
@@ -188,7 +189,7 @@ $(function(){
                 case "현대ZERO":
                     cell.cardCn = "hz";break;
                 case "현대M":
-                    cell.cardCn = "hm";break;
+                    cell.cardCn = "hm";break; // 카드유효기간 만료로 미사용됨.
                 case "생활비이체":
                     cell.cardCn = "ct";break; // cash transfer
                 case "생활비현금":
@@ -216,7 +217,7 @@ $(function(){
                     break;
             }
         });
-        console.log(mbook.db.LIST);
+
         app = new Vue({
             el: '#app',
             data: {
@@ -260,7 +261,6 @@ $(function(){
                         url:mbook.url.LIST,
                         cache : false
                     }).done(function(res){
-                        console.log(res);
                         mbook.db.LIST = mbook.impl.tsvtomap(res);
                         this.list = mbook.db.LIST;
                         $console.html("지출목록 다운로드 완료.");
@@ -372,7 +372,9 @@ $.extend(mbook,{
                 return temp.join("|");
             },
             getMethod:function(text){
-                if( (/7\*0\*/).test(text) ){
+                if( (/취소완료/).test(text) ){
+                    return "카드취소";
+                }else if( (/7\*0\*/).test(text) ){
                     return "국민봉올림";
                 }else if( (/349402/).test(text) || (/\[카카오뱅크\]/).test(text) ){
                     return "생활비이체";
@@ -434,7 +436,8 @@ $.extend(mbook,{
         },
         // 결제방식:계좌이체 컨버터
         transfer:{
-            getDate:function(text){
+            getDate:function(bill){
+                var text = bill.sms;
                 var date = (text.match(/([0-9]{4})?([\.\/]+)?([0-9]{2})([\.\/]+)([0-9]{2})/))[0]; // 날짜
                 var time = (text.match(/([0-9]{2})(\:)([0-9]{2})/))[0]; // 시간
                 date = date.replace(/\./g,"/");
@@ -451,10 +454,16 @@ $.extend(mbook,{
         },
         // 결제방식:신용카드 컨버터
         card:{
-            getDate:function(text){
-                var date = (text.match(/([0-9]{2})(\/)([0-9]{2})/))[0]; // 날짜
+            getDate:function(bill){
+                var text = bill.sms;
+                if(bill.method=="카드취소"){
+                    var date = (text.match(/([0-9]{2})(월)([0-9]{2})/))[0]; // 날짜
+                    date = date.replace("월","/");
+                }else{ // 카드승인
+                    var date = (text.match(/([0-9]{2})(\/)([0-9]{2})/))[0]; // 날짜
+                }
                 var time = (text.match(/([0-9]{2})(\:)([0-9]{2})/)); // 시간
-                time = (time) ? time[0] : "0000";
+                time = (time) ? time[0] : "00:00";
                 var yyyy = new Date().getFullYear()+"";
                 return (yyyy+"/"+date+" "+time);
             },
@@ -482,19 +491,16 @@ function make(){
     bill.sms = mbook.conv.common.smsToText( $("#test").val() ); // 문자 원문 변환
     bill.method = mbook.conv.common.getMethod(bill.sms); // 결제방식 처리.
     bill.type = mbook.conv.common.getType(bill.method);
-    bill.date = mbook.conv[bill.type].getDate(bill.sms); // 날짜 구하기
+    bill.date = mbook.conv[bill.type].getDate(bill); // 날짜 구하기
     bill.store = mbook.conv[bill.type].getStore(bill.sms); // 사용처 구하기
     bill.price = mbook.conv[bill.type].getPrice(bill.sms); // 사용금액 구하기
     bill.comment = mbook.conv.common.getComment(bill.sms) // 설명 구하기
     bill.category = mbook.conv.common.getCategory(bill.comment,bill.store) // 카테고리 구하기
+    if(bill.method=="카드취소"){
+        bill.price = bill.price * -1;
+    };
     app.form = bill;
-    console.log(bill);
 };
-/*
-$.get(mbook.url.read,function(res){
-    console.log(res);
-});
-*/
 </script>
 </body>
 </html>
