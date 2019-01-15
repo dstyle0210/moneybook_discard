@@ -103,7 +103,7 @@ table{border-spacing:0;border-collapse:collapse}
     </div>
 
     <div class="list">
-        <p class="listSumLen">총 <strong><i>{{sum}}</i>원</strong>( <i>{{len}}</i>건 )</p>
+        <p class="listSumLen">총 <strong><i>{{sum}}</i>원</strong>( <i>{{budget}}</i>% , {{len}}건)</p>
         <article v-for="bill in list" v-bind:class="[bill.cardCn]">
             <span class="date">{{ bill.date }} | {{ bill.category }}</span>
             <div>
@@ -200,6 +200,7 @@ $(function(){
 
         // 상세내역 정리
         $.each(mbook.db.BOOK,function(idx,cell){
+            cell.price = cell.result*1;
             cell.result = cell.result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 금액에 점처리
             cell.trCn = "";
             switch (cell.title){
@@ -215,6 +216,9 @@ $(function(){
                 case "총지출" :
                     cell.trCn = "total";
                     break;
+                case "총예산" :
+                    cell.trCn = "budget";
+                    break;
             }
         });
 
@@ -225,6 +229,7 @@ $(function(){
                 origin: mbook.db.LIST, // 전체 가계부 목록
                 sum : 0, // 표시되는 가계부(this.list)의 총합
                 len : 0, // 표시되는 가계부(this.list)의 갯수
+                budget:0, // 총 예산 대비 사용비율
                 category:mbook.db.LIST_CATEGORY,
                 selected:"전체",
                 nicks:mbook.db.LIST_NICK,
@@ -272,6 +277,7 @@ $(function(){
                     $.each(this.list,function(idx,item){
                         tempSum += item.price;
                     });
+                    this.budget = Math.round( (tempSum/this.book[18].price)*100 );
                     this.sum = tempSum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 },
                 sort:function(){
