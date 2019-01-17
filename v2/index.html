@@ -33,7 +33,9 @@ i{font-style:normal;}
 .detail select{width:100%;height:22px;}
 .list{box-sizing:border-box;width:100%;padding:0 10px 10px;}
 .listSumLen{text-align:right;}
-.listSumLen i{color:#dc3545;}
+.listSumLen.green i{color:#17a2b8;} /* 50% 이하 */
+.listSumLen.orange i{color:#ff6600;} /* 90% 이하 */
+.listSumLen.red i{color:#dc3545;} /* 90% 이상 */
 .list *{padding:0;margin:0;}
 .list article{box-sizing:border-box;padding:5px 10px;margin-top:5px;border:1px solid #ccc;border-radius:5px;background:#fff;}
 .list article.km{border-top:3px solid #dc3545;}
@@ -103,7 +105,7 @@ table{border-spacing:0;border-collapse:collapse}
     </div>
 
     <div class="list">
-        <p class="listSumLen">총 <strong><i>{{sum}}</i>원</strong>( <i>{{budget}}</i>% , {{len}}건)</p>
+        <p class="listSumLen" id="listSumLen">총 <strong><i>{{sum}}</i>원</strong>( <i>{{budget}}</i>% , {{len}}건)</p>
         <article v-for="bill in list" v-bind:class="[bill.cardCn]">
             <span class="date">{{ bill.date }} | {{ bill.category }}</span>
             <div>
@@ -278,6 +280,7 @@ $(function(){
                         tempSum += item.price;
                     });
                     this.budget = Math.round( (tempSum/this.book[18].price)*100 );
+                    $("#listSumLen").addClass( (this.budget < 50) ? "green" : ((this.budget < 90) ? "orange" : "red") );
                     this.sum = tempSum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 },
                 sort:function(){
