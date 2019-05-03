@@ -497,16 +497,29 @@ $.extend(mbook,{
 
 function make(){
     var bill = mbook.vo;
-    bill.sms = mbook.conv.common.smsToText( $("#test").val() ); // 문자 원문 변환
-    bill.method = mbook.conv.common.getMethod(bill.sms); // 결제방식 처리.
-    bill.type = mbook.conv.common.getType(bill.method);
-    bill.date = mbook.conv[bill.type].getDate(bill); // 날짜 구하기
-    bill.store = mbook.conv[bill.type].getStore(bill.sms); // 사용처 구하기
-    bill.price = mbook.conv[bill.type].getPrice(bill.sms); // 사용금액 구하기
-    bill.comment = mbook.conv.common.getComment(bill.sms) // 설명 구하기
-    bill.category = mbook.conv.common.getCategory(bill.comment,bill.store) // 카테고리 구하기
-    if(bill.method=="카드취소"){
-        bill.price = bill.price * -1;
+    var oriTxt = $("#test").val();
+    var dummy = oriTxt.split("\t");
+    if(10<dummy.length){
+        bill.sms = dummy.join("|");
+        bill.method = "국민마올림";
+        bill.type = "card";
+        bill.date = (dummy[0]).replace(/\-/gi,"/") + " " + dummy[1];
+        bill.store = dummy[5];
+        bill.price = (dummy[6]).replace(/[^\d]+/g, '');
+        bill.comment = "";
+        bill.category = mbook.conv.common.getCategory(bill.comment,bill.store);
+    }else{
+        bill.sms = mbook.conv.common.smsToText( oriTxt ); // 문자 원문 변환
+        bill.method = mbook.conv.common.getMethod(bill.sms); // 결제방식 처리.
+        bill.type = mbook.conv.common.getType(bill.method);
+        bill.date = mbook.conv[bill.type].getDate(bill); // 날짜 구하기
+        bill.store = mbook.conv[bill.type].getStore(bill.sms); // 사용처 구하기
+        bill.price = mbook.conv[bill.type].getPrice(bill.sms); // 사용금액 구하기
+        bill.comment = mbook.conv.common.getComment(bill.sms) // 설명 구하기
+        bill.category = mbook.conv.common.getCategory(bill.comment,bill.store) // 카테고리 구하기
+        if(bill.method=="카드취소"){
+            bill.price = bill.price * -1;
+        };
     };
     app.form = bill;
 };
