@@ -500,8 +500,8 @@ function make(){
     var oriTxt = $("#test").val();
     var dummy = oriTxt.split("\t");
     if(10<dummy.length){
-        bill.sms = dummy.join("|");
-        bill.method = "국민마올림";
+        bill.sms = dummy.join("|").replace(/\n/,"");
+        bill.method = (/원용봉/).test(bill.sms) ? "국민봉올림" : "국민마올림";
         bill.type = "card";
         bill.date = (dummy[0]).replace(/\-/gi,"/") + " " + dummy[1];
         bill.store = dummy[5];
