@@ -196,6 +196,8 @@ $(function(){
                     cell.cardCn = "ct";break; // cash transfer
                 case "생활비현금":
                     cell.cardCn = "ca";break; // cash
+                case "네이버페이":
+                    cell.cardCn = "np";break; // 네이버페이
             };
         });
         mbook.db.LIST.sort(function(a,b){ return a.sortdate- b.sortdate; }).reverse();// 내림차순 적용
@@ -393,6 +395,8 @@ $.extend(mbook,{
                     return "현대M";
                 }else if( (/(현대ZERO)/).test(text) ){
                     return "현대ZERO";
+                }else if( (/(네이버페이)/).test(text) ){
+                    return "네이버페이";
                 }else{
                     return "생활비현금";
                 };
@@ -402,9 +406,14 @@ $.extend(mbook,{
                     return "cash";
                 }else if(method=="생활비이체"){
                     return "transfer";
+                }else if(method=="네이버페이"){
+                    return "naverpay"
                 }else{
                     return "card";
                 };
+            },
+            getIsStatic:function(text){
+                return (/아파트관리비/).test(text);
             },
             getCategory:function(comment,store){
                 var word = comment+""+store;
@@ -420,16 +429,6 @@ $.extend(mbook,{
             },
             getComment:function(text){
                 return text.split("|").pop();
-            }
-        },
-        // 결제방식:현금 컨버터
-        cash:{
-            getDate:function(){
-                var toStr = mbook.impl.dateToStr;
-                return (function(d){return toStr(d.getFullYear())+"/"+toStr(d.getMonth()+1)+"/"+toStr(d.getDate())+" "+toStr(d.getHours())+":"+toStr(d.getMinutes())})(new Date()); // 현재날짜.
-            },
-            getPrice:function(text){
-                return text.split("|").shift();
             },
             getStore:function(text){
                 var storeName = "";
@@ -441,6 +440,32 @@ $.extend(mbook,{
                     };
                 });
                 return storeName.trim();
+            },
+            setStaticBill:function(bill){
+                return selectStaticBill(bill); // 고정 데이터 삽입 함수
+            }
+        },
+        naverpay:{
+            getDate:function(){
+                return mbook.conv.cash.getDate();
+            },
+            getPrice:function(text){
+                return ((text.match(/([0-9,]+)/))[1]).replace(/[^\d]+/g, '');
+            },
+            getStore:function(text){
+                return mbook.conv.common.getStore(text);
+            }
+        },
+        cash:{
+            getDate:function(){
+                var toStr = mbook.impl.dateToStr;
+                return (function(d){return toStr(d.getFullYear())+"/"+toStr(d.getMonth()+1)+"/"+toStr(d.getDate())+" "+toStr(d.getHours())+":"+toStr(d.getMinutes())})(new Date()); // 현재날짜.
+            },
+            getPrice:function(text){
+                return text.split("|").shift();
+            },
+            getStore:function(text){
+                return mbook.conv.common.getStore(text);
             }
         },
         // 결제방식:계좌이체 컨버터
@@ -480,16 +505,7 @@ $.extend(mbook,{
                 return ((text.match(/([0-9,]+)(원)/))[1]).replace(/[^\d]+/g, '');
             },
             getStore:function(text){
-                var storeName = "";
-                $.each(mbook.db.ORIGIN_STORE,function(idx,storeItem){
-                    var tester = new RegExp(storeItem.origin);
-                    if(tester.test(text)){
-                        storeName = storeItem.store;
-                        return false;
-                    };
-                });
-                storeName = (storeName=="") ? mbook.impl.findStoreOrigin(text) : storeName;
-                return storeName.trim();
+                return mbook.conv.common.getStore(text);
             }
         }
     }
@@ -500,6 +516,7 @@ function make(){
     var oriTxt = $("#test").val();
     var dummy = oriTxt.split("\t");
     if(10<dummy.length){
+        // 엑셀 시트에서 복사해서 붙여넣었을때
         bill.sms = dummy.join("|").replace(/\n/,"");
         bill.method = (/원용봉/).test(bill.sms) ? "국민봉올림" : "국민마올림";
         bill.type = "card";
@@ -512,17 +529,32 @@ function make(){
         bill.sms = mbook.conv.common.smsToText( oriTxt ); // 문자 원문 변환
         bill.method = mbook.conv.common.getMethod(bill.sms); // 결제방식 처리.
         bill.type = mbook.conv.common.getType(bill.method);
-        bill.date = mbook.conv[bill.type].getDate(bill); // 날짜 구하기
-        bill.store = mbook.conv[bill.type].getStore(bill.sms); // 사용처 구하기
-        bill.price = mbook.conv[bill.type].getPrice(bill.sms); // 사용금액 구하기
-        bill.comment = mbook.conv.common.getComment(bill.sms) // 설명 구하기
-        bill.category = mbook.conv.common.getCategory(bill.comment,bill.store) // 카테고리 구하기
-        if(bill.method=="카드취소"){
-            bill.price = bill.price * -1;
-        };
+
+        if(mbook.conv.common.getIsStatic(bill.sms)){
+            // 고정비 일경우의 처리
+            bill = mbook.conv.common.setStaticBill(bill);
+        }else{
+            // 고정비 외 처리
+            bill.date = mbook.conv[bill.type].getDate(bill); // 날짜 구하기
+            bill.store = mbook.conv[bill.type].getStore(bill.sms); // 사용처 구하기
+            bill.price = mbook.conv[bill.type].getPrice(bill.sms,bill.method); // 사용금액 구하기
+            bill.comment = mbook.conv.common.getComment(bill.sms) // 설명 구하기
+            bill.category = mbook.conv.common.getCategory(bill.comment,bill.store) // 카테고리 구하기
+            if(bill.method=="카드취소"){
+                bill.price = bill.price * -1;
+            };
+        }
     };
     app.form = bill;
 };
+
+function selectStaticBill(bill){
+    var bill = bill;
+    if( (/아파트관리비/).test(bill.sms) ){
+        bill.date = mbook.conv.card.getDate(bill); // 날짜 구하기
+        bill.store = "아파트관리비";
+    }
+}
 </script>
 </body>
 </html>
