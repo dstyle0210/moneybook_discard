@@ -12,55 +12,55 @@
 </head>
 <body>
 <style>
-body,p{padding:0;margin:0;}
-i{font-style:normal;}
-.tabSec{width:100%;overflow:hidden;}
-.tabSec > a{float:left;display:block;box-sizing:border-box;width:50%;height:30px;line-height:30px;text-align:center;background:#f5f5f5;border:1px solid #ccc;color:#333;text-decoration:none;font-size:14px;}
-.consoleSec{box-sizing:border-box;padding:0 10px;width:100%;overflow:hidden;}
-.consoleSec p{margin:0;padding:3px 0;font-size:12px;text-align:center;background:#087196;color:#fff;overflow:hidden;}
-.smsform{box-sizing:border-box;padding:10px;width:100%;}
-.smsform *{box-sizing:border-box;}
-.smsform textarea{padding:10px;width:100%;font-size:14px;}
-.smsform button{width:100%;padding:10px 0;background:#087196;color:#fff;border:0;}
-.filter{box-sizing:border-box;padding:10px;width:100%;}
-.filter select{box-sizing:border-box;height:30px;width:100%;}
-.detail{box-sizing:border-box;padding:10px;width:100%;overflow:hidden;}
-.detail *{box-sizing:border-box;}
-.detail div{float:left;padding:5px;height:35px;width:50%;text-align:center;overflow:hidden;}
-.detail div input{width:100%;}
-.detail p{width:100%;clear:both;}
-.detail p button{width:100%;padding:10px 0;background:#087196;color:#fff;border:0;}
-.detail select{width:100%;height:22px;}
-.list{box-sizing:border-box;width:100%;padding:0 10px 10px;}
-.listSumLen{text-align:right;}
-.listSumLen.green i{color:#17a2b8;} /* 50% 이하 */
-.listSumLen.orange i{color:#ff6600;} /* 90% 이하 */
-.listSumLen.red i{color:#dc3545;} /* 90% 이상 */
-.list *{padding:0;margin:0;}
-.list article{box-sizing:border-box;padding:5px 10px;margin-top:5px;border:1px solid #ccc;border-radius:5px;background:#fff;}
-.list article.km{border-top:3px solid #dc3545;}
-.list article.kb{border-top:3px solid #17a2b8;}
-.list article.hm{border-top:3px solid #ffc107;}
-.list article.hz{border-top:3px solid #ffc107;}
-.list article.ca{border-top:3px solid #868e96;}
-.list article.ct{border-top:3px solid #868e96;}
-.list article > *{margin:0;padding:0;line-height:1;}
-.list article .date{font-size:11px;}
-.list article > div{width:100%;overflow:hidden;}
-.list article h2{float:left;font-size:15px;font-weight:700;}
-.list article .money{float:right;font-size:15px;}
-.list article p.desc{display:block;width:100%;padding-top:5px;font-size:13px;overflow:hidden;}
-.list article p.desc .category{display:block;float:left;}
-.list article p.desc .comment{display:block;float:right;}
-table{border-spacing:0;border-collapse:collapse}
-.detailTable{width:100%;margin:0 auto;}
-.detailTable tr[class^=to] th,.detailTable tr[class^=to] td{font-weight:700;font-size:15px;}
-.detailTable th{font-size:13px;font-weight:400;padding-left:10px;text-align:left;border:1px solid #ccc;}
-.detailTable td{font-size:13px;font-weight:400;padding-right:10px;text-align:right;border:1px solid #ccc;}
-.detailTable .tofix{background:#17a2b8;}
-.detailTable .toreq{background:#ffc107;}
-.detailTable .toloss{background:#dc3545;}
-.detailTable .total{background:#868e96;}
+    body,p{padding:0;margin:0;}
+    i{font-style:normal;}
+    .tabSec{width:100%;overflow:hidden;}
+    .tabSec > a{float:left;display:block;box-sizing:border-box;width:50%;height:30px;line-height:30px;text-align:center;background:#f5f5f5;border:1px solid #ccc;color:#333;text-decoration:none;font-size:14px;}
+    .consoleSec{box-sizing:border-box;padding:0 10px;width:100%;overflow:hidden;}
+    .consoleSec p{margin:0;padding:3px 0;font-size:12px;text-align:center;background:#087196;color:#fff;overflow:hidden;}
+    .smsform{box-sizing:border-box;padding:10px;width:100%;}
+    .smsform *{box-sizing:border-box;}
+    .smsform textarea{padding:10px;width:100%;font-size:14px;}
+    .smsform button{width:100%;padding:10px 0;background:#087196;color:#fff;border:0;}
+    .filter{box-sizing:border-box;padding:10px;width:100%;}
+    .filter select{box-sizing:border-box;height:30px;width:100%;}
+    .detail{box-sizing:border-box;padding:10px;width:100%;overflow:hidden;}
+    .detail *{box-sizing:border-box;}
+    .detail div{float:left;padding:5px;height:35px;width:50%;text-align:center;overflow:hidden;}
+    .detail div input{width:100%;}
+    .detail p{width:100%;clear:both;}
+    .detail p button{width:100%;padding:10px 0;background:#087196;color:#fff;border:0;}
+    .detail select{width:100%;height:22px;}
+    .list{box-sizing:border-box;width:100%;padding:0 10px 10px;}
+    .listSumLen{text-align:right;}
+    .listSumLen.green i{color:#17a2b8;} /* 50% 이하 */
+    .listSumLen.orange i{color:#ff6600;} /* 90% 이하 */
+    .listSumLen.red i{color:#dc3545;} /* 90% 이상 */
+    .list *{padding:0;margin:0;}
+    .list article{box-sizing:border-box;padding:5px 10px;margin-top:5px;border:1px solid #ccc;border-radius:5px;background:#fff;}
+    .list article.km{border-top:3px solid #dc3545;}
+    .list article.kb{border-top:3px solid #17a2b8;}
+    .list article.hm{border-top:3px solid #ffc107;}
+    .list article.hz{border-top:3px solid #ffc107;}
+    .list article.ca{border-top:3px solid #868e96;}
+    .list article.ct{border-top:3px solid #868e96;}
+    .list article > *{margin:0;padding:0;line-height:1;}
+    .list article .date{font-size:11px;}
+    .list article > div{width:100%;overflow:hidden;}
+    .list article h2{float:left;font-size:15px;font-weight:700;}
+    .list article .money{float:right;font-size:15px;}
+    .list article p.desc{display:block;width:100%;padding-top:5px;font-size:13px;overflow:hidden;}
+    .list article p.desc .category{display:block;float:left;}
+    .list article p.desc .comment{display:block;float:right;}
+    table{border-spacing:0;border-collapse:collapse}
+    .detailTable{width:100%;margin:0 auto;}
+    .detailTable tr[class^=to] th,.detailTable tr[class^=to] td{font-weight:700;font-size:15px;}
+    .detailTable th{font-size:13px;font-weight:400;padding-left:10px;text-align:left;border:1px solid #ccc;}
+    .detailTable td{font-size:13px;font-weight:400;padding-right:10px;text-align:right;border:1px solid #ccc;}
+    .detailTable .tofix{background:#17a2b8;}
+    .detailTable .toreq{background:#ffc107;}
+    .detailTable .toloss{background:#dc3545;}
+    .detailTable .total{background:#868e96;}
 </style>
 <section class="smsform">
     <textarea name="" id="test" cols="30" rows="10"></textarea>
@@ -119,442 +119,442 @@ table{border-spacing:0;border-collapse:collapse}
     </div>
 </div>
 <script type="text/javascript">
-// 프로미스로, 필터 다운로드
-var app;
-var localBills; // 디바이스 안에 저장될 지출목록
-$(function(){
-    var $consoleCase = $("#console");
-    var $console = $consoleCase.find("p");
-    var P_LIST_NICK = new Promise(function(resolve,rej){
-        $console.html("결제별명 목록 다운로드 시작.");
-        $.get(mbook.url.LIST_NICK,function(res){
-            $console.html("결제별명 목록 다운로드 완료.");
-            mbook.db.LIST_NICK = mbook.impl.tsvtomap(res);
-            resolve();
+    // 프로미스로, 필터 다운로드
+    var app;
+    var localBills; // 디바이스 안에 저장될 지출목록
+    $(function(){
+        var $consoleCase = $("#console");
+        var $console = $consoleCase.find("p");
+        var P_LIST_NICK = new Promise(function(resolve,rej){
+            $console.html("결제별명 목록 다운로드 시작.");
+            $.get(mbook.url.LIST_NICK,function(res){
+                $console.html("결제별명 목록 다운로드 완료.");
+                mbook.db.LIST_NICK = mbook.impl.tsvtomap(res);
+                resolve();
+            });
         });
-    });
-    var P_LIST_CATEGORY = new Promise(function(resolve,rej){
-        $console.html("카테고리 목록 다운로드 시작.");
-        $.get(mbook.url.LIST_CATEGORY,function(res){
-            $console.html("카테고리 목록 다운로드 완료.");
-            mbook.db.LIST_CATEGORY = mbook.impl.tsvtomap(res);
-            resolve();
-        });
-    });
-
-    var P_ORIGIN_STORE = new Promise(function(resolve,rej){
-        $console.html("사용처 데이터 다운로드 시작.");
-        $.get(mbook.url.ORIGIN_STORE,function(res){
-            $console.html("사용처 데이터 다운로드 완료.");
-            mbook.db.ORIGIN_STORE = mbook.impl.tsvtomap(res);
-            resolve();
-        });
-    });
-
-    var P_WORD_CATEGORY = new Promise(function(resolve,rej){
-        $console.html("사용처와 카테고리 매칭 데이터 다운로드 시작.");
-        $.get(mbook.url.WORD_CATEGORY,function(res){
-            $console.html("사용처와 카테고리 매칭 데이터 다운로드 완료.");
-            mbook.db.WORD_CATEGORY = mbook.impl.tsvtomap(res);
-            resolve();
-        });
-    });
-
-    var P_LIST = new Promise(function(resolve,rej){
-        $.get(mbook.url.LIST,function(res){
-            $console.html("지출목록 다운로드 완료.");
-            mbook.db.LIST = mbook.impl.tsvtomap(res);
-            resolve();
-        });
-    });
-
-    var P_BOOK = new Promise(function(resolve,rej){
-        $.get(mbook.url.BOOK,function(res){
-            $console.html("가계부 다운로드 완료.");
-            mbook.db.BOOK = mbook.impl.tsvtomap(res);
-            resolve();
-        });
-    });
-
-    Promise.all([P_ORIGIN_STORE,P_WORD_CATEGORY,P_LIST,P_BOOK,P_LIST_CATEGORY,P_LIST_NICK]).then(function(){
-        $console.html("다운로드 완료");
-        $consoleCase.delay(1000).animate({"height":0},500);
-        $.each(mbook.db.LIST,function(idx,cell){
-            cell.sortdate = (cell.date.match(/([0-9]+)/g).join('') )*1; // 내림차순 정렬을 위해 날짜정보 숫자로 변환
-            cell.dotprice = cell.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 금액에 점처리
-            cell.price = cell.price * 1;
-            switch (cell.method){
-                case "국민봉올림":
-                    cell.cardCn = "kb";break;
-                case "국민마올림":
-                    cell.cardCn = "km";break;
-                case "현대ZERO":
-                    cell.cardCn = "hz";break;
-                case "현대M":
-                    cell.cardCn = "hm";break; // 카드유효기간 만료로 미사용됨.
-                case "생활비이체":
-                    cell.cardCn = "ct";break; // cash transfer
-                case "생활비현금":
-                    cell.cardCn = "ca";break; // cash
-                case "네이버페이":
-                    cell.cardCn = "np";break; // 네이버페이
-            };
-        });
-        mbook.db.LIST.sort(function(a,b){ return a.sortdate- b.sortdate; }).reverse();// 내림차순 적용
-
-        // 상세내역 정리
-        $.each(mbook.db.BOOK,function(idx,cell){
-            cell.price = cell.result*1;
-            cell.result = cell.result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 금액에 점처리
-            cell.trCn = "";
-            switch (cell.title){
-                case "고정비총합" :
-                    cell.trCn = "tofix";
-                    break;
-                case "필수비총합" :
-                    cell.trCn = "toreq";
-                    break;
-                case "변동비총합" :
-                    cell.trCn = "toloss";
-                    break;
-                case "총지출" :
-                    cell.trCn = "total";
-                    break;
-                case "총예산" :
-                    cell.trCn = "budget";
-                    break;
-            }
+        var P_LIST_CATEGORY = new Promise(function(resolve,rej){
+            $console.html("카테고리 목록 다운로드 시작.");
+            $.get(mbook.url.LIST_CATEGORY,function(res){
+                $console.html("카테고리 목록 다운로드 완료.");
+                mbook.db.LIST_CATEGORY = mbook.impl.tsvtomap(res);
+                resolve();
+            });
         });
 
-        app = new Vue({
-            el: '#app',
-            data: {
-                list: mbook.db.LIST, // 가계부에 표시되는 목록
-                origin: mbook.db.LIST, // 전체 가계부 목록
-                sum : 0, // 표시되는 가계부(this.list)의 총합
-                len : 0, // 표시되는 가계부(this.list)의 갯수
-                budget:0, // 총 예산 대비 사용비율
-                category:mbook.db.LIST_CATEGORY,
-                selected:"전체",
-                nicks:mbook.db.LIST_NICK,
-                form: mbook.vo,
-                book:mbook.db.BOOK
-            },
-            mounted:function(){ // lifeCycle hook
-                this.sumUpdate();
-                this.len = this.list.length;
-            },
-            updated:function(){ // lifeCycle hook
-                this.sumUpdate();
-                this.len = this.list.length;
-            },
-            methods:{
-                upload:function(){
-                    app.form.category = app.form.category.trim();
-                    $consoleCase.height("auto");
-                    $console.html("사용내역을 업로드 합니다.");
-                    $.ajax({
-                        method: "POST",
-                        url: "https://script.google.com/macros/s/AKfycbw3KsXcgcrixfPJhBWbCCzWM5Re7qBJa54BNylgUT3_DSrupi0/exec",
-                        data: app.form
-                    }).done(function( msg ) {
-                        $consoleCase.height("auto");
-                        $console.html("사용내역을 저장 되었습니다");
-                        window.location.reload();
-                    });
-                },
-                reset:function(){
-                    $consoleCase.height("auto");
-                    $console.html("지출목록을 다시 가져옵니다.");
-                    $.get({
-                        url:mbook.url.LIST,
-                        cache : false
-                    }).done(function(res){
-                        mbook.db.LIST = mbook.impl.tsvtomap(res);
-                        this.list = mbook.db.LIST;
-                        $console.html("지출목록 다운로드 완료.");
-                        $consoleCase.height("auto").delay(1000).animate({"height":0},500);
-                    });
-                },
-                sumUpdate:function(){
-                    var tempSum = 0;
-                    $.each(this.list,function(idx,item){
-                        tempSum += item.price;
-                    });
-                    this.budget = Math.round( (tempSum/this.book[18].price)*100 );
-                    $("#listSumLen").addClass( (this.budget < 50) ? "green" : ((this.budget < 90) ? "orange" : "red") );
-                    this.sum = tempSum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                },
-                sort:function(){
-                    var tempDB = [];
-                    var word = this.selected;
-                    if(word=="전체"){
-                        this.list = this.origin;
-                        return;
-                    };
-                    $.each(this.origin,function(idx,item){
-                        if(item.category==word){
-                            tempDB.push(item);
-                        };
-                    });
-                    this.list = tempDB;
-                }
-            }
+        var P_ORIGIN_STORE = new Promise(function(resolve,rej){
+            $console.html("사용처 데이터 다운로드 시작.");
+            $.get(mbook.url.ORIGIN_STORE,function(res){
+                $console.html("사용처 데이터 다운로드 완료.");
+                mbook.db.ORIGIN_STORE = mbook.impl.tsvtomap(res);
+                resolve();
+            });
         });
-    });
 
-});
+        var P_WORD_CATEGORY = new Promise(function(resolve,rej){
+            $console.html("사용처와 카테고리 매칭 데이터 다운로드 시작.");
+            $.get(mbook.url.WORD_CATEGORY,function(res){
+                $console.html("사용처와 카테고리 매칭 데이터 다운로드 완료.");
+                mbook.db.WORD_CATEGORY = mbook.impl.tsvtomap(res);
+                resolve();
+            });
+        });
 
-var mbook = {};
-mbook.impl = {
-    // 구글 스프레드시트 경로생성(read)
-    makeReadUrl:function(gid){
-        return "https://docs.google.com/spreadsheets/d/e/2PACX-1vR7bdbW90fSse9TyBRw_5q3MI1oqzZHaWV5ICSh_6cPb7iyHFT4zrXWuA7Pes08qgKwQlGRnSDE6BPk/pub?gid="+gid+"&output=tsv";
-    },
-    tsvtomap:function(tsv){
-        var origin = tsv.split(/\n/);
-        var keys = [];
-        var data = [];
-        $(origin).each(function(idx){
-            var datas = this.split(/\t/);
-            var temp = {};
-            $(datas).each(function(i,cell){
-                if(idx==0){
-                    keys.push( cell.trim() );
-                }else{
-                    temp[keys[i]] = datas[i].trim();
+        var P_LIST = new Promise(function(resolve,rej){
+            $.get(mbook.url.LIST,function(res){
+                $console.html("지출목록 다운로드 완료.");
+                mbook.db.LIST = mbook.impl.tsvtomap(res);
+                resolve();
+            });
+        });
+
+        var P_BOOK = new Promise(function(resolve,rej){
+            $.get(mbook.url.BOOK,function(res){
+                $console.html("가계부 다운로드 완료.");
+                mbook.db.BOOK = mbook.impl.tsvtomap(res);
+                resolve();
+            });
+        });
+
+        Promise.all([P_ORIGIN_STORE,P_WORD_CATEGORY,P_LIST,P_BOOK,P_LIST_CATEGORY,P_LIST_NICK]).then(function(){
+            $console.html("다운로드 완료");
+            $consoleCase.delay(1000).animate({"height":0},500);
+            $.each(mbook.db.LIST,function(idx,cell){
+                cell.sortdate = (cell.date.match(/([0-9]+)/g).join('') )*1; // 내림차순 정렬을 위해 날짜정보 숫자로 변환
+                cell.dotprice = cell.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 금액에 점처리
+                cell.price = cell.price * 1;
+                switch (cell.method){
+                    case "국민봉올림":
+                        cell.cardCn = "kb";break;
+                    case "국민마올림":
+                        cell.cardCn = "km";break;
+                    case "현대ZERO":
+                        cell.cardCn = "hz";break;
+                    case "현대M":
+                        cell.cardCn = "hm";break; // 카드유효기간 만료로 미사용됨.
+                    case "생활비이체":
+                        cell.cardCn = "ct";break; // cash transfer
+                    case "생활비현금":
+                        cell.cardCn = "ca";break; // cash
+                    case "네이버페이":
+                        cell.cardCn = "np";break; // 네이버페이
                 };
             });
-            data.push(temp);
-        });
-        data.shift(); // 첫번째 항목은 버림.
-        return data;
-    },
-    findStoreOrigin:function(smsText){
-        var wh = 5;
-        if((/KB국민카드7\*1\*/).test(smsText)){
-            wh = 4;
-        };
-        if( !(/\[Web/).test(smsText) ){
-            wh = wh-1;
-        };
-        return smsText.split("|")[wh];
-    },
-    dateToStr:function(n){
-        return (n<10) ? "0"+n : ""+n
-    }
-};
-mbook.url = {
-    insert:"http://script.google.com/macros/s/AKfycbw3KsXcgcrixfPJhBWbCCzWM5Re7qBJa54BNylgUT3_DSrupi0/exec",
-    LIST:mbook.impl.makeReadUrl("0"),
-    BOOK:mbook.impl.makeReadUrl("1301384578"),
-    ORIGIN_STORE:mbook.impl.makeReadUrl("1829870897"),
-    WORD_CATEGORY:mbook.impl.makeReadUrl("766723916"),
-    LIST_CATEGORY:mbook.impl.makeReadUrl("1428284449"),
-    LIST_NICK:mbook.impl.makeReadUrl("1664499784")
-};
+            mbook.db.LIST.sort(function(a,b){ return a.sortdate- b.sortdate; }).reverse();// 내림차순 적용
 
-$.extend(mbook,{
-    vo:{
-        date:null,
-        category:"",
-        store:"",
-        price:0,
-        type:"",
-        method:"", // 결제방식 명칭
-        comment:"",
-        sms:""
-    },
-    db:{
-        LIST:[], // 지출내역
-        BOOK:[], // 가계부
-        ORIGIN_STORE:[], // 문자내역 -> 사용처 구하기(일종의 필터)
-        WORD_CATEGORY:[], // 사용처 -> 항목 구하기(일종의 필터)
-        BOOK:[]
-    },
-    conv:{ // 컨버터 패키지
-        // 공통 사용 컨버터
-        common:{
-            smsToText:function(sms){
-                var temp = [];
-                $(sms.split(/\n/)).each(function(idx,kind){
-                    temp.push( kind.trim() );
-                });
-                return temp.join("|");
-            },
-            getMethod:function(text){
-                if( (/취소완료/).test(text) ){
-                    return "카드취소";
-                }else if( (/7\*0\*/).test(text) ){
-                    return "국민봉올림";
-                }else if( (/349402/).test(text) || (/\[카카오뱅크\]/).test(text) ){
-                    return "생활비이체";
-                }else if( (/7\*1\*/).test(text) ){
-                    return "국민마올림";
-                }else if( (/(현대카드 M)/).test(text) ){
-                    return "현대M";
-                }else if( (/(현대ZERO)/).test(text) ){
-                    return "현대ZERO";
-                }else if( (/(네이버페이)/).test(text) ){
-                    return "네이버페이";
-                }else{
-                    return "생활비현금";
-                };
-            },
-            getType:function(method){
-                if(method=="생활비현금"){
-                    return "cash";
-                }else if(method=="생활비이체"){
-                    return "transfer";
-                }else if(method=="네이버페이"){
-                    return "naverpay"
-                }else{
-                    return "card";
-                };
-            },
-            getIsStatic:function(text){
-                return (/아파트관리비/).test(text);
-            },
-            getCategory:function(comment,store){
-                var word = comment+""+store;
-                var cateNm = "";
-                $.each(mbook.db.WORD_CATEGORY,function(idx,categoryItem){
-                    var tester = new RegExp(categoryItem.word);
-                    if(tester.test(word)){
-                        cateNm = categoryItem.category;
-                        return false;
-                    };
-                });
-                return cateNm;
-            },
-            getComment:function(text){
-                return text.split("|").pop();
-            },
-            getStore:function(text){
-                var storeName = "";
-                $.each(mbook.db.ORIGIN_STORE,function(idx,storeItem){
-                    var tester = new RegExp(storeItem.origin);
-                    if(tester.test(text)){
-                        storeName = storeItem.store;
-                        return false;
-                    };
-                });
-                return storeName.trim();
-            },
-            setStaticBill:function(bill){
-                return selectStaticBill(bill); // 고정 데이터 삽입 함수
-            }
-        },
-        naverpay:{
-            getDate:function(){
-                return mbook.conv.cash.getDate();
-            },
-            getPrice:function(text){
-                return ((text.match(/([0-9,]+)/))[1]).replace(/[^\d]+/g, '');
-            },
-            getStore:function(text){
-                return mbook.conv.common.getStore(text);
-            }
-        },
-        cash:{
-            getDate:function(){
-                var toStr = mbook.impl.dateToStr;
-                return (function(d){return toStr(d.getFullYear())+"/"+toStr(d.getMonth()+1)+"/"+toStr(d.getDate())+" "+toStr(d.getHours())+":"+toStr(d.getMinutes())})(new Date()); // 현재날짜.
-            },
-            getPrice:function(text){
-                return text.split("|").shift();
-            },
-            getStore:function(text){
-                return mbook.conv.common.getStore(text);
-            }
-        },
-        // 결제방식:계좌이체 컨버터
-        transfer:{
-            getDate:function(bill){
-                var text = bill.sms;
-                var date = (text.match(/([0-9]{4})?([\.\/]+)?([0-9]{2})([\.\/]+)([0-9]{2})/))[0]; // 날짜
-                var time = (text.match(/([0-9]{2})(\:)([0-9]{2})/))[0]; // 시간
-                date = date.replace(/\./g,"/");
-                date = (date.length==5) ? (new Date().getFullYear())+"/"+date : date;
-                return (date+" "+time);
-            },
-            getPrice:function(text){
-                var money = (text.match(/([0-9]{1,3})?([\,]+)?([0-9]{1,3})?([\,]+)([0-9]{3})/))[0]; // 금액
-                return money.replace(/[^\d]+/g, '');
-            },
-            getStore:function(text){
-                return (text.split(" "))[5];
-            }
-        },
-        // 결제방식:신용카드 컨버터
-        card:{
-            getDate:function(bill){
-                var text = bill.sms;
-                if(bill.method=="카드취소"){
-                    var date = (text.match(/([0-9]{2})(월)([0-9]{2})/))[0]; // 날짜
-                    date = date.replace("월","/");
-                }else{ // 카드승인
-                    var date = (text.match(/([0-9]{2})(\/)([0-9]{2})/))[0]; // 날짜
+            // 상세내역 정리
+            $.each(mbook.db.BOOK,function(idx,cell){
+                cell.price = cell.result*1;
+                cell.result = cell.result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 금액에 점처리
+                cell.trCn = "";
+                switch (cell.title){
+                    case "고정비총합" :
+                        cell.trCn = "tofix";
+                        break;
+                    case "필수비총합" :
+                        cell.trCn = "toreq";
+                        break;
+                    case "변동비총합" :
+                        cell.trCn = "toloss";
+                        break;
+                    case "총지출" :
+                        cell.trCn = "total";
+                        break;
+                    case "총예산" :
+                        cell.trCn = "budget";
+                        break;
                 }
-                var time = (text.match(/([0-9]{2})(\:)([0-9]{2})/)); // 시간
-                time = (time) ? time[0] : "00:00";
-                var yyyy = new Date().getFullYear()+"";
-                return (yyyy+"/"+date+" "+time);
-            },
-            getPrice:function(text){
-                return ((text.match(/([0-9,]+)(원)/))[1]).replace(/[^\d]+/g, '');
-            },
-            getStore:function(text){
-                return mbook.conv.common.getStore(text);
-            }
-        }
-    }
-});
+            });
 
-function make(){
-    var bill = mbook.vo;
-    var oriTxt = $("#test").val();
-    var dummy = oriTxt.split("\t");
-    if(10<dummy.length){
-        // 엑셀 시트에서 복사해서 붙여넣었을때
-        bill.sms = dummy.join("|").replace(/\n/,"");
-        bill.method = (/원용봉/).test(bill.sms) ? "국민봉올림" : "국민마올림";
-        bill.type = "card";
-        bill.date = (dummy[0]).replace(/\-/gi,"/") + " " + dummy[1];
-        bill.store = dummy[5];
-        bill.price = (dummy[6]).replace(/[^\d]+/g, '');
-        bill.comment = (bill.method=="국민마올림") ? "뭐지" : "";
-        bill.category = mbook.conv.common.getCategory(bill.comment,bill.store);
-    }else{
-        bill.sms = mbook.conv.common.smsToText( oriTxt ); // 문자 원문 변환
-        bill.method = mbook.conv.common.getMethod(bill.sms); // 결제방식 처리.
-        bill.type = mbook.conv.common.getType(bill.method);
+            app = new Vue({
+                el: '#app',
+                data: {
+                    list: mbook.db.LIST, // 가계부에 표시되는 목록
+                    origin: mbook.db.LIST, // 전체 가계부 목록
+                    sum : 0, // 표시되는 가계부(this.list)의 총합
+                    len : 0, // 표시되는 가계부(this.list)의 갯수
+                    budget:0, // 총 예산 대비 사용비율
+                    category:mbook.db.LIST_CATEGORY,
+                    selected:"전체",
+                    nicks:mbook.db.LIST_NICK,
+                    form: mbook.vo,
+                    book:mbook.db.BOOK
+                },
+                mounted:function(){ // lifeCycle hook
+                    this.sumUpdate();
+                    this.len = this.list.length;
+                },
+                updated:function(){ // lifeCycle hook
+                    this.sumUpdate();
+                    this.len = this.list.length;
+                },
+                methods:{
+                    upload:function(){
+                        app.form.category = app.form.category.trim();
+                        $consoleCase.height("auto");
+                        $console.html("사용내역을 업로드 합니다.");
+                        $.ajax({
+                            method: "POST",
+                            url: "https://script.google.com/macros/s/AKfycbw3KsXcgcrixfPJhBWbCCzWM5Re7qBJa54BNylgUT3_DSrupi0/exec",
+                            data: app.form
+                        }).done(function( msg ) {
+                            $consoleCase.height("auto");
+                            $console.html("사용내역을 저장 되었습니다");
+                            window.location.reload();
+                        });
+                    },
+                    reset:function(){
+                        $consoleCase.height("auto");
+                        $console.html("지출목록을 다시 가져옵니다.");
+                        $.get({
+                            url:mbook.url.LIST,
+                            cache : false
+                        }).done(function(res){
+                            mbook.db.LIST = mbook.impl.tsvtomap(res);
+                            this.list = mbook.db.LIST;
+                            $console.html("지출목록 다운로드 완료.");
+                            $consoleCase.height("auto").delay(1000).animate({"height":0},500);
+                        });
+                    },
+                    sumUpdate:function(){
+                        var tempSum = 0;
+                        $.each(this.list,function(idx,item){
+                            tempSum += item.price;
+                        });
+                        this.budget = Math.round( (tempSum/this.book[18].price)*100 );
+                        $("#listSumLen").addClass( (this.budget < 50) ? "green" : ((this.budget < 90) ? "orange" : "red") );
+                        this.sum = tempSum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    },
+                    sort:function(){
+                        var tempDB = [];
+                        var word = this.selected;
+                        if(word=="전체"){
+                            this.list = this.origin;
+                            return;
+                        };
+                        $.each(this.origin,function(idx,item){
+                            if(item.category==word){
+                                tempDB.push(item);
+                            };
+                        });
+                        this.list = tempDB;
+                    }
+                }
+            });
+        });
 
-        if(mbook.conv.common.getIsStatic(bill.sms)){
-            // 고정비 일경우의 처리
-            bill = mbook.conv.common.setStaticBill(bill);
-        }else{
-            // 고정비 외 처리
-            bill.date = mbook.conv[bill.type].getDate(bill); // 날짜 구하기
-            bill.store = mbook.conv[bill.type].getStore(bill.sms); // 사용처 구하기
-            bill.price = mbook.conv[bill.type].getPrice(bill.sms,bill.method); // 사용금액 구하기
-            bill.comment = mbook.conv.common.getComment(bill.sms) // 설명 구하기
-            bill.category = mbook.conv.common.getCategory(bill.comment,bill.store) // 카테고리 구하기
-            if(bill.method=="카드취소"){
-                bill.price = bill.price * -1;
+    });
+
+    var mbook = {};
+    mbook.impl = {
+        // 구글 스프레드시트 경로생성(read)
+        makeReadUrl:function(gid){
+            return "https://docs.google.com/spreadsheets/d/e/2PACX-1vR7bdbW90fSse9TyBRw_5q3MI1oqzZHaWV5ICSh_6cPb7iyHFT4zrXWuA7Pes08qgKwQlGRnSDE6BPk/pub?gid="+gid+"&output=tsv";
+        },
+        tsvtomap:function(tsv){
+            var origin = tsv.split(/\n/);
+            var keys = [];
+            var data = [];
+            $(origin).each(function(idx){
+                var datas = this.split(/\t/);
+                var temp = {};
+                $(datas).each(function(i,cell){
+                    if(idx==0){
+                        keys.push( cell.trim() );
+                    }else{
+                        temp[keys[i]] = datas[i].trim();
+                    };
+                });
+                data.push(temp);
+            });
+            data.shift(); // 첫번째 항목은 버림.
+            return data;
+        },
+        findStoreOrigin:function(smsText){
+            var wh = 5;
+            if((/KB국민카드7\*1\*/).test(smsText)){
+                wh = 4;
             };
+            if( !(/\[Web/).test(smsText) ){
+                wh = wh-1;
+            };
+            return smsText.split("|")[wh];
+        },
+        dateToStr:function(n){
+            return (n<10) ? "0"+n : ""+n
         }
     };
-    app.form = bill;
-};
+    mbook.url = {
+        insert:"http://script.google.com/macros/s/AKfycbw3KsXcgcrixfPJhBWbCCzWM5Re7qBJa54BNylgUT3_DSrupi0/exec",
+        LIST:mbook.impl.makeReadUrl("0"),
+        BOOK:mbook.impl.makeReadUrl("1301384578"),
+        ORIGIN_STORE:mbook.impl.makeReadUrl("1829870897"),
+        WORD_CATEGORY:mbook.impl.makeReadUrl("766723916"),
+        LIST_CATEGORY:mbook.impl.makeReadUrl("1428284449"),
+        LIST_NICK:mbook.impl.makeReadUrl("1664499784")
+    };
 
-function selectStaticBill(bill){
-    var bill = bill;
-    if( (/아파트관리비/).test(bill.sms) ){
-        bill.date = mbook.conv.card.getDate(bill); // 날짜 구하기
-        bill.store = "아파트관리비";
+    $.extend(mbook,{
+        vo:{
+            date:null,
+            category:"",
+            store:"",
+            price:0,
+            type:"",
+            method:"", // 결제방식 명칭
+            comment:"",
+            sms:""
+        },
+        db:{
+            LIST:[], // 지출내역
+            BOOK:[], // 가계부
+            ORIGIN_STORE:[], // 문자내역 -> 사용처 구하기(일종의 필터)
+            WORD_CATEGORY:[], // 사용처 -> 항목 구하기(일종의 필터)
+            BOOK:[]
+        },
+        conv:{ // 컨버터 패키지
+            // 공통 사용 컨버터
+            common:{
+                smsToText:function(sms){
+                    var temp = [];
+                    $(sms.split(/\n/)).each(function(idx,kind){
+                        temp.push( kind.trim() );
+                    });
+                    return temp.join("|");
+                },
+                getMethod:function(text){
+                    if( (/취소완료/).test(text) ){
+                        return "카드취소";
+                    }else if( (/7\*0\*/).test(text) ){
+                        return "국민봉올림";
+                    }else if( (/349402/).test(text) || (/\[카카오뱅크\]/).test(text) ){
+                        return "생활비이체";
+                    }else if( (/7\*1\*/).test(text) ){
+                        return "국민마올림";
+                    }else if( (/(현대카드 M)/).test(text) ){
+                        return "현대M";
+                    }else if( (/(현대ZERO)/).test(text) ){
+                        return "현대ZERO";
+                    }else if( (/(네이버페이)/).test(text) ){
+                        return "네이버페이";
+                    }else{
+                        return "생활비현금";
+                    };
+                },
+                getType:function(method){
+                    if(method=="생활비현금"){
+                        return "cash";
+                    }else if(method=="생활비이체"){
+                        return "transfer";
+                    }else if(method=="네이버페이"){
+                        return "naverpay"
+                    }else{
+                        return "card";
+                    };
+                },
+                getIsStatic:function(text){
+                    return (/아파트관리비/).test(text);
+                },
+                getCategory:function(comment,store){
+                    var word = comment+""+store;
+                    var cateNm = "";
+                    $.each(mbook.db.WORD_CATEGORY,function(idx,categoryItem){
+                        var tester = new RegExp(categoryItem.word);
+                        if(tester.test(word)){
+                            cateNm = categoryItem.category;
+                            return false;
+                        };
+                    });
+                    return cateNm;
+                },
+                getComment:function(text){
+                    return text.split("|").pop();
+                },
+                getStore:function(text){
+                    var storeName = "";
+                    $.each(mbook.db.ORIGIN_STORE,function(idx,storeItem){
+                        var tester = new RegExp(storeItem.origin);
+                        if(tester.test(text)){
+                            storeName = storeItem.store;
+                            return false;
+                        };
+                    });
+                    return storeName.trim();
+                },
+                setStaticBill:function(bill){
+                    return selectStaticBill(bill); // 고정 데이터 삽입 함수
+                }
+            },
+            naverpay:{
+                getDate:function(){
+                    return mbook.conv.cash.getDate();
+                },
+                getPrice:function(text){
+                    return ((text.match(/([0-9,]+)/))[1]).replace(/[^\d]+/g, '');
+                },
+                getStore:function(text){
+                    return mbook.conv.common.getStore(text);
+                }
+            },
+            cash:{
+                getDate:function(){
+                    var toStr = mbook.impl.dateToStr;
+                    return (function(d){return toStr(d.getFullYear())+"/"+toStr(d.getMonth()+1)+"/"+toStr(d.getDate())+" "+toStr(d.getHours())+":"+toStr(d.getMinutes())})(new Date()); // 현재날짜.
+                },
+                getPrice:function(text){
+                    return text.split("|").shift();
+                },
+                getStore:function(text){
+                    return mbook.conv.common.getStore(text);
+                }
+            },
+            // 결제방식:계좌이체 컨버터
+            transfer:{
+                getDate:function(bill){
+                    var text = bill.sms;
+                    var date = (text.match(/([0-9]{4})?([\.\/]+)?([0-9]{2})([\.\/]+)([0-9]{2})/))[0]; // 날짜
+                    var time = (text.match(/([0-9]{2})(\:)([0-9]{2})/))[0]; // 시간
+                    date = date.replace(/\./g,"/");
+                    date = (date.length==5) ? (new Date().getFullYear())+"/"+date : date;
+                    return (date+" "+time);
+                },
+                getPrice:function(text){
+                    var money = (text.match(/([0-9]{1,3})?([\,]+)?([0-9]{1,3})?([\,]+)([0-9]{3})/))[0]; // 금액
+                    return money.replace(/[^\d]+/g, '');
+                },
+                getStore:function(text){
+                    return (text.split(" "))[5];
+                }
+            },
+            // 결제방식:신용카드 컨버터
+            card:{
+                getDate:function(bill){
+                    var text = bill.sms;
+                    if(bill.method=="카드취소"){
+                        var date = (text.match(/([0-9]{2})(월)([0-9]{2})/))[0]; // 날짜
+                        date = date.replace("월","/");
+                    }else{ // 카드승인
+                        var date = (text.match(/([0-9]{2})(\/)([0-9]{2})/))[0]; // 날짜
+                    }
+                    var time = (text.match(/([0-9]{2})(\:)([0-9]{2})/)); // 시간
+                    time = (time) ? time[0] : "00:00";
+                    var yyyy = new Date().getFullYear()+"";
+                    return (yyyy+"/"+date+" "+time);
+                },
+                getPrice:function(text){
+                    return ((text.match(/([0-9,]+)(원)/))[1]).replace(/[^\d]+/g, '');
+                },
+                getStore:function(text){
+                    var storeName = mbook.conv.common.getStore(text);
+                    return (storeName=="") ? mbook.impl.findStoreOrigin(text) : storeName;
+                }
+            }
+        }
+    });
+
+    function make(){
+        var bill = mbook.vo;
+        var oriTxt = $("#test").val();
+        var dummy = oriTxt.split("\t");
+        if(10<dummy.length){
+            // 엑셀 시트에서 복사해서 붙여넣었을때
+            bill.sms = dummy.join("|").replace(/\n/,"");
+            bill.method = (/원용봉/).test(bill.sms) ? "국민봉올림" : "국민마올림";
+            bill.type = "card";
+            bill.date = (dummy[0]).replace(/\-/gi,"/") + " " + dummy[1];
+            bill.store = dummy[5];
+            bill.price = (dummy[6]).replace(/[^\d]+/g, '');
+            bill.comment = (bill.method=="국민마올림") ? "뭐지" : "";
+            bill.category = mbook.conv.common.getCategory(bill.comment,bill.store);
+        }else{
+            bill.sms = mbook.conv.common.smsToText( oriTxt ); // 문자 원문 변환
+            bill.method = mbook.conv.common.getMethod(bill.sms); // 결제방식 처리.
+            bill.type = mbook.conv.common.getType(bill.method);
+            if(mbook.conv.common.getIsStatic(bill.sms)){
+                // 고정비 일경우의 처리
+                bill = mbook.conv.common.setStaticBill(bill);
+            }else{
+                // 고정비 외 처리
+                bill.date = mbook.conv[bill.type].getDate(bill); // 날짜 구하기
+                bill.store = mbook.conv[bill.type].getStore(bill.sms); // 사용처 구하기
+                bill.price = mbook.conv[bill.type].getPrice(bill.sms,bill.method); // 사용금액 구하기
+                bill.comment = mbook.conv.common.getComment(bill.sms) // 설명 구하기
+                bill.category = mbook.conv.common.getCategory(bill.comment,bill.store) // 카테고리 구하기
+                if(bill.method=="카드취소"){
+                    bill.price = bill.price * -1;
+                };
+            };
+        };
+        app.form = bill;
+    };
+
+    function selectStaticBill(bill){
+        var bill = bill;
+        if( (/아파트관리비/).test(bill.sms) ){
+            bill.date = mbook.conv.card.getDate(bill); // 날짜 구하기
+            bill.store = "아파트관리비";
+        }
     }
-}
 </script>
 </body>
 </html>
