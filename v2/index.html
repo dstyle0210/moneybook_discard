@@ -506,7 +506,7 @@ function make(){
         bill.date = (dummy[0]).replace(/\-/gi,"/") + " " + dummy[1];
         bill.store = dummy[5];
         bill.price = (dummy[6]).replace(/[^\d]+/g, '');
-        bill.comment = "";
+        bill.comment = (bill.method=="국민마올림") ? "뭐지" : "";
         bill.category = mbook.conv.common.getCategory(bill.comment,bill.store);
     }else{
         bill.sms = mbook.conv.common.smsToText( oriTxt ); // 문자 원문 변환
