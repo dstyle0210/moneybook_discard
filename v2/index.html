@@ -414,9 +414,6 @@
                         return "card";
                     };
                 },
-                getIsStatic:function(text){
-                    return ( (/아파트관리비/).test(text) || (/시립스위첸어린이집/).test(text) );
-                },
                 getCategory:function(comment,store){
                     var word = comment+""+store;
                     var cateNm = mbook.db.WORD_CATEGORY[mbook.db.WORD_CATEGORY.length-1].category; // 카테고리의 마지막 항목으로 기본셋팅(임시/뭐지)
@@ -533,38 +530,22 @@
             bill.comment = (bill.method=="국민마올림") ? "뭐지" : "";
             bill.category = mbook.conv.common.getCategory(bill.comment,bill.store);
         }else{
+            // 문자매세지로 넣었을때
             bill.sms = mbook.conv.common.smsToText( oriTxt ); // 문자 원문 변환
             bill.method = mbook.conv.common.getMethod(bill.sms); // 결제방식 처리.
             bill.type = mbook.conv.common.getType(bill.method);
-            if(mbook.conv.common.getIsStatic(bill.sms)){
-                // 고정비 일경우의 처리
-                bill = mbook.conv.common.setStaticBill(bill);
-            }else{
-                // 고정비 외 처리
-                bill.date = mbook.conv[bill.type].getDate(bill); // 날짜 구하기
-                bill.store = mbook.conv[bill.type].getStore(bill); // 사용처 구하기
-                bill.price = mbook.conv[bill.type].getPrice(bill.sms); // 사용금액 구하기
-                bill.comment = mbook.conv.common.getComment(bill.sms) // 설명 구하기
-                bill.category = mbook.conv.common.getCategory(bill.comment,bill.store) // 카테고리 구하기
-                if(bill.method=="카드취소"){
-                    bill.price = bill.price * -1;
-                };
+            bill.date = mbook.conv[bill.type].getDate(bill); // 날짜 구하기
+            bill.store = mbook.conv[bill.type].getStore(bill); // 사용처 구하기
+            bill.price = mbook.conv[bill.type].getPrice(bill.sms); // 사용금액 구하기
+            bill.comment = mbook.conv.common.getComment(bill.sms) // 설명 구하기
+            bill.category = mbook.conv.common.getCategory(bill.comment,bill.store) // 카테고리 구하기
+            if(bill.method=="카드취소"){
+                bill.price = bill.price * -1;
             };
         };
 
         app.form = bill;
     };
-
-    function selectStaticBill(bill){
-        var bill = bill;
-        if( (/아파트관리비/).test(bill.sms) ){
-            bill.date = mbook.conv.card.getDate(bill); // 날짜 구하기
-            bill.store = "아파트관리비";
-        }else if( (/시립스위첸어린이집/).test(bill.sms) ){
-            bill.date = mbook.conv.card.getDate(bill); // 날짜 구하기
-            bill.store = "시립스위첸어린이집";
-        }
-    }
 </script>
 </body>
 </html>
