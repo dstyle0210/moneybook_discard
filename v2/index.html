@@ -63,7 +63,7 @@
     .detailTable .total{background:#868e96;}
 </style>
 <section class="smsform">
-    <textarea name="" id="test" cols="30" rows="10"></textarea>
+    <textarea name="" id="test" cols="30" rows="10" placeholder=""></textarea>
     <button onclick="make();">정보가져오기</button>
 </section>
 <section class="consoleSec" id="console"><p></p></section>
@@ -121,8 +121,9 @@
 <script type="text/javascript">
     // 프로미스로, 필터 다운로드
     var app;
-    var localBills; // 디바이스 안에 저장될 지출목록
+    var version = "버전 : 20180813"; // 업데이트 확인용 버전저장
     $(function(){
+        $("textarea").attr("placeholder",version);
         var $consoleCase = $("#console");
         var $console = $consoleCase.find("p");
         var P_LIST_NICK = new Promise(function(resolve,rej){
@@ -378,7 +379,9 @@
                 smsToText:function(sms){
                     var temp = [];
                     $(sms.split(/\n/)).each(function(idx,kind){
-                        temp.push( kind.trim() );
+                        if(kind.trim()!=""){
+                            temp.push( kind.trim() );
+                        }
                     });
                     return temp.join("|");
                 },
@@ -429,7 +432,7 @@
                 getComment:function(text){
                     return text.split("|").pop();
                 },
-                getStore:function(text){
+                getStore:function(text , excuteStoreName){
                     var storeName = "";
                     $.each(mbook.db.ORIGIN_STORE,function(idx,storeItem){
                         var tester = new RegExp(storeItem.origin);
@@ -438,10 +441,7 @@
                             return false;
                         };
                     });
-                    return storeName.trim();
-                },
-                setStaticBill:function(bill){
-                    return selectStaticBill(bill); // 고정 데이터 삽입 함수
+                    return (storeName=="") ? excuteStoreName : storeName.trim();
                 }
             },
             naverpay:{
@@ -452,7 +452,7 @@
                     return ((text.match(/([0-9,]+)/))[1]).replace(/[^\d]+/g, '');
                 },
                 getStore:function(bill){
-                    return mbook.conv.common.getStore(bill.sms);
+                    return mbook.conv.common.getStore(bill.sms , "네이버쇼핑");
                 }
             },
             cash:{
@@ -464,7 +464,7 @@
                     return text.split("|").shift();
                 },
                 getStore:function(bill){
-                    return mbook.conv.common.getStore(bill.sms);
+                    return mbook.conv.common.getStore(bill.sms , "현금");
                 }
             },
             // 결제방식:계좌이체 컨버터
@@ -483,9 +483,11 @@
                 },
                 getStore:function(bill){
                     if(bill.method == "국민은행"){
-                        return (bill.sms.split(" "))[5];
+                        var excuteStoreName = (bill.sms.split(" "))[5];
+                        return mbook.conv.common.getStore( bill.sms , excuteStoreName );
                     }else if(bill.method == "카카오뱅크"){
-                        return (bill.sms.split("|")[3]).replace(/[\(\)]+/gi,"");
+                        var excuteStoreName = (bill.sms.split("|")[3]).replace(/[\(\)]+/gi,"");
+                        return mbook.conv.common.getStore( bill.sms , excuteStoreName );
                     };
                 }
             },
@@ -508,8 +510,8 @@
                     return ((text.match(/([0-9,]+)(원)/))[1]).replace(/[^\d]+/g, '');
                 },
                 getStore:function(bill){
-                    var storeName = mbook.conv.common.getStore(bill.sms);
-                    return (storeName=="") ? mbook.impl.findStoreOrigin(bill.sms) : storeName;
+                    var excuteStoreName = mbook.impl.findStoreOrigin(bill.sms);
+                    return mbook.conv.common.getStore(bill.sms , excuteStoreName );
                 }
             }
         }
@@ -542,6 +544,7 @@
             if(bill.method=="카드취소"){
                 bill.price = bill.price * -1;
             };
+            console.log(bill);
         };
 
         app.form = bill;
