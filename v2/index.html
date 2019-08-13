@@ -121,7 +121,7 @@
 <script type="text/javascript">
     // 프로미스로, 필터 다운로드
     var app;
-    var version = "버전 : 20180813"; // 업데이트 확인용 버전저장
+    var version = "버전 : 20180813_2"; // 업데이트 확인용 버전저장
     $(function(){
         $("textarea").attr("placeholder",version);
         var $consoleCase = $("#console");
@@ -527,7 +527,7 @@
             bill.method = (/원용봉/).test(bill.sms) ? "국민봉올림" : "국민마올림";
             bill.type = "card";
             bill.date = (dummy[0]).replace(/\-/gi,"/") + " " + dummy[1];
-            bill.store = dummy[5];
+            bill.store = mbook.conv.common.getStore(bill.sms , dummy[5] );
             bill.price = (dummy[6]).replace(/[^\d]+/g, '');
             bill.comment = (bill.method=="국민마올림") ? "뭐지" : "";
             bill.category = mbook.conv.common.getCategory(bill.comment,bill.store);
