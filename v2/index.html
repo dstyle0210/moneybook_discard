@@ -121,7 +121,7 @@
 <script type="text/javascript">
     // 프로미스로, 필터 다운로드
     var app;
-    var version = "버전 : 20180813_2"; // 업데이트 확인용 버전저장
+    var version = "버전 : 20180828"; // 업데이트 확인용 버전저장
     $(function(){
         $("textarea").attr("placeholder",version);
         var $consoleCase = $("#console");
@@ -419,7 +419,7 @@
                 },
                 getCategory:function(comment,store){
                     var word = comment+""+store;
-                    var cateNm = mbook.db.WORD_CATEGORY[mbook.db.WORD_CATEGORY.length-1].category; // 카테고리의 마지막 항목으로 기본셋팅(임시/뭐지)
+                    var cateNm = mbook.db.LIST_CATEGORY[mbook.db.LIST_CATEGORY.length-1].list; // 카테고리의 마지막 항목으로 기본셋팅(임시/뭐지)
                     $.each(mbook.db.WORD_CATEGORY,function(idx,categoryItem){
                         var tester = new RegExp(categoryItem.word);
                         if(tester.test(word)){
