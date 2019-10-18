@@ -388,7 +388,7 @@
                 getMethod:function(text){
                     if( (/취소완료/).test(text) ){
                         return "카드취소";
-                    }else if( (/7\*0\*/).test(text) ){
+                    }else if( (/7\*0\*/).test(text) || (/1\*1\*/).test(text) ){
                         return "국민봉올림";
                     }else if( (/349402/).test(text) ){
                         return "국민은행";
