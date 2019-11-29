@@ -121,7 +121,7 @@
 <script type="text/javascript">
     // 프로미스로, 필터 다운로드
     var app;
-    var version = "버전 : 20191018"; // 업데이트 확인용 버전저장
+    var version = "버전 : 20191129"; // 업데이트 확인용 버전저장
     $(function(){
         $("textarea").attr("placeholder",version);
         var $consoleCase = $("#console");
@@ -546,7 +546,7 @@
             };
             console.log(bill);
         };
-
+        bill.subcategory = ""; // 임시추가
         app.form = bill;
     };
 </script>
