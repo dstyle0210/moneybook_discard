@@ -121,7 +121,7 @@
 <script type="text/javascript">
     // 프로미스로, 필터 다운로드
     var app;
-    var version = "버전 : 20191129"; // 업데이트 확인용 버전저장
+    var version = "버전 : 20191206"; // 업데이트 확인용 버전저장
     $(function(){
         $("textarea").attr("placeholder",version);
         var $consoleCase = $("#console");
@@ -282,7 +282,7 @@
                         $.each(this.list,function(idx,item){
                             tempSum += item.price;
                         });
-                        this.budget = Math.round( (tempSum/this.book[18].price)*100 );
+                        this.budget = Math.round( (tempSum/3000000)*100 );
                         $("#listSumLen").addClass( (this.budget < 50) ? "green" : ((this.budget < 90) ? "orange" : "red") );
                         this.sum = tempSum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     },
