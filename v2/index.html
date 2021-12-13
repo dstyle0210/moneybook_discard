@@ -255,7 +255,7 @@
                         $consoleCase.height("auto");
                         $console.html("사용내역을 업로드 합니다.");
                         $.ajax({
-                            method: "POST",
+                            method: "GET",
                             url: "https://script.google.com/macros/s/AKfycbw3KsXcgcrixfPJhBWbCCzWM5Re7qBJa54BNylgUT3_DSrupi0/exec",
                             data: app.form
                         }).done(function( msg ) {
